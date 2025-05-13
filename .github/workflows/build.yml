@@ -20,9 +20,9 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y fonts-noto-cjk
-          mkdir -p .fonts
-          cp /usr/share/fonts/opentype/noto/*.ttc .fonts/
-          fc-cache -v .fonts
+          mkdir -p $HOME/.fonts
+          cp /usr/share/fonts/opentype/noto/*.ttc $HOME/.fonts/
+          fc-cache -v $HOME/.fonts
 
       - name: Compile all chapters
         uses: xu-cheng/latex-action@v2
@@ -30,7 +30,7 @@ jobs:
           root_file: |
             chapter0.tex
           latexmk_use_xelatex: true
-          extra_fonts: .fonts
+          extra_fonts: $HOME/.fonts
 
       - name: Upload PDFs
         uses: actions/upload-artifact@v4
