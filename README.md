@@ -18,7 +18,7 @@
 ## 🏗️ 自動編譯（GitHub Actions）
 
 本專案已設定 GitHub Actions，自動將所有章節編譯成 PDF。  
-你可以在 [Actions](https://github.com/你的帳號/你的專案/actions) 中查看每次編譯的產出結果。
+你可以在 [Actions](https://github.com/YuutaTsubasa/DataStructureAndAlgorithmsSlides/actions) 中查看每次編譯的產出結果。
 
 ### 📂 編譯輸出
 
