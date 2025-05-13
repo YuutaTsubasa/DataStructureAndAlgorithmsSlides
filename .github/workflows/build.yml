@@ -22,6 +22,7 @@ jobs:
           sudo apt install -y fonts-noto-cjk
           mkdir -p .fonts
           cp /usr/share/fonts/opentype/noto/*.ttc .fonts/
+          fc-cache -v .fonts
 
       - name: Compile all chapters
         uses: xu-cheng/latex-action@v2
