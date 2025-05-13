@@ -1,7 +1,9 @@
-name: Build All LaTeX Chapters
+name: Build and Release LaTeX PDF
 
 on:
   push:
+    tags:
+      - 'v*'  # 例如 v1.0.0 時觸發
     paths:
       - '**.tex'
       - '**.png'
@@ -13,23 +15,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install TeX Live + Fonts
-        run: |
-          sudo apt update
-          sudo apt install -y \
-            texlive-full \
-            fonts-noto-cjk \
-            latexmk
+      - name: Compile LaTeX with xelatex
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: chapter0.tex
+          compiler: xelatex
 
-      - name: Compile all chapters
-        run: |
-          latexmk -pdf -xelatex -interaction=nonstopmode -halt-on-error chapter0.tex
+      - name: Rename PDF (可選)
+        run: mv chapter0.pdf chapter0-${{ github.ref_name }}.pdf
 
-      - name: Upload PDFs
+      - name: Upload artifact (for inspection)
         uses: actions/upload-artifact@v4
         with:
-          name: compiled-chapters
-          path: chapter0.pdf
+          name: chapter0
+          path: chapter0-*.pdf
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: chapter0-*.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
