@@ -1,0 +1,31 @@
+name: Build All LaTeX Chapters
+
+on:
+  push:
+    paths:
+      - '**.tex'
+      - '**.png'
+      - '**.jpg'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Compile all chapters
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: |
+            chapter0.tex
+          latexmk_use_xelatex: true  # 因為你用了 CJKutf8 和 bsmi 字型
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-chapters
+          path: |
+            chapter0.pdf
