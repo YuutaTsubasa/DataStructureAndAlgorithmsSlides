@@ -20,13 +20,16 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y fonts-noto-cjk
+          mkdir -p .fonts
+          cp /usr/share/fonts/opentype/noto/*.ttc .fonts/
 
       - name: Compile all chapters
         uses: xu-cheng/latex-action@v2
         with:
           root_file: |
             chapter0.tex
-          latexmk_use_xelatex: true  # 因為你用了 CJKutf8 和 bsmi 字型
+          latexmk_use_xelatex: true
+          extra_fonts: .fonts
 
       - name: Upload PDFs
         uses: actions/upload-artifact@v4
