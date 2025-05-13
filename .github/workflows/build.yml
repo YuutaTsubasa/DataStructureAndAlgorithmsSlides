@@ -20,10 +20,6 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y fonts-noto-cjk
-          
-      - name: List installed CJK fonts
-        run: |
-          fc-list :lang=zh | grep -i noto
 
       - name: Compile all chapters
         uses: xu-cheng/latex-action@v2
