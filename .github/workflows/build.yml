@@ -23,6 +23,7 @@ jobs:
         with:
           root_file: chapter0.tex
           compiler: xelatex
+          extra_system_packages: fonts-noto-cjk
 
       - name: Rename PDF (可選)
         run: mv chapter0.pdf chapter0-${{ github.ref_name }}.pdf
