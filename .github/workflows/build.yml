@@ -16,22 +16,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install fonts
+      - name: Install TeX Live + Fonts
         run: |
           sudo apt update
-          sudo apt install -y fonts-noto-cjk
+          sudo apt install -y \
+            texlive-full \
+            fonts-noto-cjk \
+            latexmk
 
       - name: Compile all chapters
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: |
-            chapter0.tex
-          latexmk_use_xelatex: true
-          extra_system_packages: fonts-noto-cjk
+        run: |
+          latexmk -pdf -xelatex -interaction=nonstopmode -halt-on-error chapter0.tex
 
       - name: Upload PDFs
         uses: actions/upload-artifact@v4
         with:
           name: compiled-chapters
-          path: |
-            chapter0.pdf
+          path: chapter0.pdf
