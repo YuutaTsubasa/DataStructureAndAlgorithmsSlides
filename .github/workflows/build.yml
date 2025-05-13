@@ -16,6 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install fonts
+        run: |
+          sudo apt update
+          sudo apt install -y fonts-noto-cjk
+
       - name: Compile all chapters
         uses: xu-cheng/latex-action@v2
         with:

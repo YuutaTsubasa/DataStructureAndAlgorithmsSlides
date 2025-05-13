@@ -1,6 +1,8 @@
 \documentclass{beamer}
 \usetheme{Madrid}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}  % 可以保留沒關係
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC} % 看你想用什麼字型
 \usepackage{CJKutf8}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -44,7 +46,6 @@
 }
 
 \begin{document}
-\begin{CJK}{UTF8}{bsmi}
 
 \title{資料結構與演算法入門：第 0 章}
 \subtitle{資料結構與演算法的簡介}
@@ -192,5 +193,4 @@ a + (a \times (b - 1)) & \text{如果 } b > 0
 \end{center}
 \end{frame}
 
-\end{CJK}
 \end{document}
