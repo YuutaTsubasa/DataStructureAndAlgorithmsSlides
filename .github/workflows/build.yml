@@ -47,14 +47,16 @@ jobs:
       - name: Rename PDF
         run: |
           base=$(basename "${{ matrix.file }}" .tex)
-          mv "$base.pdf" "$base-${{ github.ref_name }}.pdf"
+          mv "$base-${{ github.ref_name }}.pdf" "${base}.pdf"
+          echo "artifact name: $base-pdf"
+          mkdir -p out && mv "${base}.pdf" out/
+        shell: bash
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: chapter-pdfs
-          path: |
-            chapter*-*.pdf
+          name: chapter-${{ matrix.file }}
+          path: out/
 
   release:
     needs: build
@@ -64,10 +66,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Download all PDFs
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          name: chapter-pdfs
+          pattern: chapter-*
+          merge-multiple: true
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
