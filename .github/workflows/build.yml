@@ -3,7 +3,7 @@ name: Build and Release LaTeX PDF
 on:
   push:
     tags:
-      - 'v*'  # 例如 v1.0.0 時觸發
+      - 'v*'
     paths:
       - '**.tex'
       - '**.png'
@@ -11,34 +11,69 @@ on:
   workflow_dispatch:
 
 jobs:
+  detect-chapters:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Find all chapter*.tex files
+        id: set-matrix
+        run: |
+          files=$(find . -name 'chapter*.tex' | sed 's|^\./||')
+          matrix=$(printf '%s\n' "$files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
   build:
+    needs: detect-chapters
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        file: ${{ fromJson(needs.detect-chapters.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Compile LaTeX
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: ${{ matrix.file }}
+          compiler: xelatex
+          extra_system_packages: fonts-noto-cjk
+
+      - name: Rename PDF
+        run: |
+          base=$(basename "${{ matrix.file }}" .tex)
+          mv "$base.pdf" "$base-${{ github.ref_name }}.pdf"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chapter-pdfs
+          path: |
+            chapter*-*.pdf
+
+  release:
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Compile LaTeX with xelatex
-        uses: dante-ev/latex-action@latest
+      - name: Download all PDFs
+        uses: actions/download-artifact@v4
         with:
-          root_file: chapter0.tex
-          compiler: xelatex
-          extra_system_packages: fonts-noto-cjk
-
-      - name: Rename PDF (可選)
-        run: mv chapter0.pdf chapter0-${{ github.ref_name }}.pdf
-
-      - name: Upload artifact (for inspection)
-        uses: actions/upload-artifact@v4
-        with:
-          name: chapter0
-          path: chapter0-*.pdf
+          name: chapter-pdfs
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          files: chapter0-*.pdf
+          files: chapter*-*.pdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
