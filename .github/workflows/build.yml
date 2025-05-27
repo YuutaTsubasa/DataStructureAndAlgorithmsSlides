@@ -44,12 +44,10 @@ jobs:
           compiler: xelatex
           extra_system_packages: fonts-noto-cjk
 
-      - name: Rename PDF
+      - name: Prepare and upload PDF
         run: |
           base=$(basename "${{ matrix.file }}" .tex)
-          mv "$base-${{ github.ref_name }}.pdf" "${base}.pdf"
-          echo "artifact name: $base-pdf"
-          mkdir -p out && mv "${base}.pdf" out/
+          mkdir -p out && cp "${base}.pdf" "out/${base}-${{ github.ref_name }}.pdf"
         shell: bash
 
       - name: Upload artifact
