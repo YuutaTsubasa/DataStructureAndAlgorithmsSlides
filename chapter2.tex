@@ -8,6 +8,10 @@
 \usepackage{listings}
 \usepackage{xcolor}
 
+\lstset{
+  literate={<<}{{\textless{}\textless{}}}2 {>>}{{\textgreater{}\textgreater{}}}2
+}
+
 \lstdefinestyle{cppstyle}{
   language=C++,
   basicstyle=\ttfamily\small,
@@ -24,12 +28,12 @@
   tabsize=2
 }
 
+\begin{document}
+
 \title{資料結構與演算法入門：第 2 章}
 \subtitle{窮舉法與遞迴}
 \author{悠太翼 Yuuta Tsubasa}
 \date{\today}
-
-\begin{document}
 
 \frame{\titlepage}
 
@@ -42,7 +46,7 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{範例一：索尼克比賽示範關卡安排}
+\begin{frame}[fragile]{範例一：索尼克比賽示範關卡安排}
 \begin{itemize}
     \item 關卡列表：[Green Hill, Seaside Hill, City Escape]
     \item 玩家列表：[SonicBoss, Jerry, Zexas]
@@ -65,4 +69,5 @@ for (string stage : stages) {
     \item 時間複雜度：$O(n \times m)$，其中 $n$ 是關卡數，$m$ 是玩家數
 \end{itemize}
 \end{frame}
+
 \end{document}
