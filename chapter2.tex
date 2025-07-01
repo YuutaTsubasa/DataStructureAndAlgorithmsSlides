@@ -1,0 +1,68 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\title{資料結構與演算法入門：第 2 章}
+\subtitle{窮舉法與遞迴}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{什麼是窮舉法？}
+\begin{itemize}
+    \item 窮舉法（Brute Force）：把所有可能的情況都試一遍
+    \item 是最直覺、最通用的解法
+    \item 缺點：效率可能非常低，無法處理太大的輸入空間
+    \item 優點：實作簡單、一定能找出正確答案（若有）
+\end{itemize}
+\end{frame}
+
+\begin{frame}{範例一：索尼克比賽示範關卡安排}
+\begin{itemize}
+    \item 關卡列表：[Green Hill, Seaside Hill, City Escape]
+    \item 玩家列表：[SonicBoss, Jerry, Zexas]
+    \item 從中挑一個人來玩一關，列出所有可能的組合：
+\end{itemize}
+
+\begin{lstlisting}[style=cppstyle]
+vector<string> stages = {"Green Hill", "Seaside Hill", "City Escape"};
+vector<string> players = {"SonicBoss", "Jerry", "Zexas"};
+
+for (string stage : stages) {
+    for (string player : players) {
+        cout << stage << " - " << player << endl;
+    }
+}
+\end{lstlisting}
+
+\begin{itemize}
+    \item 共列出 $3 \times 3 = 9$ 種組合
+    \item 時間複雜度：$O(n \times m)$，其中 $n$ 是關卡數，$m$ 是玩家數
+\end{itemize}
+\end{frame}
+\end{document}
