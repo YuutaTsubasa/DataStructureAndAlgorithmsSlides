@@ -3,10 +3,27 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{xeCJK}
-\setCJKmainfont{Noto Sans CJK TC}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
 
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{forest}
 
 \lstset{
   literate={<<}{{\textless{}\textless{}}}2 {>>}{{\textgreater{}\textgreater{}}}2
@@ -41,9 +58,27 @@
 \begin{itemize}
     \item 窮舉法（Brute Force）：把所有可能的情況都試一遍
     \item 是最直覺、最通用的解法
-    \item 缺點：效率可能非常低，無法處理太大的輸入空間
-    \item 優點：實作簡單、一定能找出正確答案（若有）
+    \item 適合問題空間不大的場合
 \end{itemize}
+
+\vspace{1em}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\raggedright\arraybackslash}m{6.5cm}|}
+\hline
+\textbf{優點} & 
+實作簡單 \newline
+一定能找出正確答案（若有） \newline
+適用於所有問題類型 \\
+\hline
+\textbf{缺點} & 
+效率低，無法處理太大輸入 \newline
+計算量可能爆炸性成長 \newline
+缺乏最佳化 \\
+\hline
+\end{tabular}
+\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{範例一：索尼克比賽示範關卡安排}
@@ -70,4 +105,200 @@ for (string stage : stages) {
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{範例二：找出陣列中兩個數的和為指定值}
+\begin{itemize}
+    \item 題目：給定一個整數陣列和一個目標值，找出陣列中是否存在兩個數字相加等於目標值。
+    \item 這是一個典型的窮舉法適用問題（暴力解法）：
+\end{itemize}
+
+\vspace{0.5em}
+\begin{lstlisting}[style=cppstyle]
+vector<int> nums = {1, 3, 5, 7, 9};
+int target = 10;
+
+bool isFound = false;
+for (int i = 0; i < nums.size(); i++) {
+    for (int j = i + 1; j < nums.size(); j++) {
+        if (nums[i] + nums[j] == target) {
+            isFound = true;
+        }
+    }
+}
+\end{lstlisting}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item 時間複雜度：$O(n^2)$，需要兩層迴圈比較所有配對
+    \item 空間複雜度：$O(1)$，僅使用常數額外變數
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{加速方法：使用 target - num 的概念}
+\begin{itemize}
+    \item 窮舉法效率低，能不能更快？
+    \item 我們可以「邊走邊記錄」，用一個集合記住看過的數字
+    \item 每次檢查是否存在目標值減去目前數字的差值
+\end{itemize}
+
+\vspace{0.5em}
+\begin{lstlisting}[style=cppstyle]
+vector<int> nums = {1, 3, 5, 7, 9};
+int target = 10;
+unordered_set<int> seen;
+
+for (int num : nums) {
+    if (seen.find(target - num) != seen.end()) {
+        // 找到了 num + (target - num) = target
+        found = true;
+    }
+    seen.insert(num);
+}
+\end{lstlisting}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item 時間複雜度：$O(n)$，每個數字最多操作一次
+    \item 空間複雜度：$O(n)$，額外使用一個集合儲存已看過的數字
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{什麼是遞迴？}
+\begin{itemize}
+    \item 遞迴（Recursion）是一種函式「呼叫自己」的寫法
+    \item 一個遞迴函式必須要有：
+    \begin{itemize}
+        \item \textbf{基底情況（Base Case）：} 不再呼叫自己，直接回傳
+        \item \textbf{遞迴情況（Recursive Case）：} 將問題縮小，呼叫自己來解更小的子問題
+    \end{itemize}
+    \item 遞迴常用於：
+    \begin{itemize}
+        \item 重複的結構（如樹、圖、排列組合）
+        \item 難以用迴圈表達的邏輯
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.5em}
+\begin{block}{舉例：從 1 數到 n}
+\begin{lstlisting}[style=cppstyle]
+void count(int n) {
+    if (n == 0) return;
+    count(n - 1);
+    cout << n << endl;
+}
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}{遞迴流程圖：count(3)}
+\centering
+\begin{tikzpicture}[
+    node distance=1.6cm,
+    boxnode/.style={draw, rounded corners, minimum width=3cm, minimum height=1cm, font=\small},
+    textnode/.style={font=\tiny},
+    arrow/.style={->, thick}
+]
+
+\node[boxnode] (c3) {count(3)};
+\node[boxnode] (c2) [below of=c3] {count(2)};
+\node[boxnode] (c1) [below of=c2] {count(1)};
+\node[boxnode] (c0) [below of=c1] {count(0)};
+
+% 呼叫箭頭（向下彎）
+\draw[arrow, bend right=15] (c3) to node[textnode, pos=0.5, xshift=-10pt] {呼叫} (c2);
+\draw[arrow, bend right=15] (c2) to node[textnode, pos=0.5, xshift=-10pt] {呼叫} (c1);
+\draw[arrow, bend right=15] (c1) to node[textnode, pos=0.5, xshift=-10pt] {呼叫} (c0);
+
+% 返回箭頭（向上彎）
+\draw[arrow, bend right=15] (c0) to node[textnode, pos=0.5, xshift=20pt] {返回，印出 1} (c1);
+\draw[arrow, bend right=15] (c1) to node[textnode, pos=0.5, xshift=20pt] {返回，印出 2} (c2);
+\draw[arrow, bend right=15] (c2) to node[textnode, pos=0.5, xshift=20pt] {返回，印出 3} (c3);
+
+\end{tikzpicture}
+
+\vspace{1em}
+\textbf{說明：} 遞迴先呼叫到底，再從 \texttt{count(0)} 返回並印出數字
+\end{frame}
+
+\begin{frame}[fragile]{遞迴寫法（上）：列出每個關卡}
+\begin{itemize}
+    \item 第一層遞迴：逐一處理每個關卡
+    \item 先不處理玩家部分，只列出關卡
+\end{itemize}
+
+\vspace{0.5em}
+\begin{lstlisting}[style=cppstyle]
+vector<string> stages = {"Green Hill", "Seaside Hill", "City Escape"};
+
+void listStages(int si) {
+    if (si == stages.size()) return;
+    cout << stages[si] << endl;
+    listStages(si + 1);
+}
+
+listStages(0);
+\end{lstlisting}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item 遞迴終止條件為索引超出範圍
+    \item 時間複雜度：$O(n)$，其中 $n$ 是關卡數
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{遞迴寫法（下）：列出所有關卡與玩家的組合}
+\begin{itemize}
+    \item 第二層遞迴：處理每個關卡下的所有玩家
+\end{itemize}
+
+\vspace{0.5em}
+\begin{lstlisting}[style=cppstyle]
+vector<string> players = {"SonicBoss", "Jerry", "Zexas"};
+
+void listPlayers(int si, int pi) {
+    if (pi == players.size()) return;
+    cout << stages[si] << " - " << players[pi] << endl;
+    listPlayers(si, pi + 1);
+}
+
+void listCombinations(int si) {
+    if (si == stages.size()) return;
+    listPlayers(si, 0);
+    listCombinations(si + 1);
+}
+
+listCombinations(0);
+\end{lstlisting}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item 雙層遞迴對應雙層迴圈，總時間複雜度為 $O(n \times m)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{遞迴寫法：找出兩數和為目標值（窮舉）}
+\begin{itemize}
+    \item 使用兩層遞迴枚舉所有組合
+\end{itemize}
+
+\vspace{0.5em}
+\begin{lstlisting}[style=cppstyle]
+bool findSumBrute(vector<int>& nums, int i, int j, int target) {
+    if (i >= nums.size()) return false;
+    if (j >= nums.size()) return findSumBrute(nums, i + 1, i + 2, target);
+    if (nums[i] + nums[j] == target) return true;
+    return findSumBrute(nums, i, j + 1, target);
+}
+
+bool found = findSumBrute(nums, 0, 1, 10);
+\end{lstlisting}
+
+\vspace{0.5em}
+\begin{itemize}
+    \item 每對 $(i, j)$ 都嘗試一次，時間複雜度為 $O(n^2)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{後續待補......}
+待續.....
+\end{frame}
 \end{document}

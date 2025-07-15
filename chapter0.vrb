@@ -1,0 +1,13 @@
+\frametitle{程式碼示範：C++ 實作}
+\vspace{-0.5em}
+\begin{lstlisting}[style=cppstyle]
+int multiply(int a, int b) {
+    int result = 0;
+    for (int i = 0; i < b; i++) {
+        result += a;
+    }
+    return result;
+}
+
+int result = multiply(12, 5);
+\end{lstlisting}

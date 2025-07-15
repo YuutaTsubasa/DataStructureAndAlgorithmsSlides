@@ -2,7 +2,21 @@
 \usetheme{Madrid}
 
 \usepackage{xeCJK}
-\setCJKmainfont{Noto Sans CJK TC}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
 
 \usepackage{listings}
 \usepackage{xcolor}
@@ -137,32 +151,32 @@ int result = multiply(12, 5);
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{進階補充：LISP 程式碼範例（可略過）}
-\begin{itemize}
-    \item 以下是用 LISP 撰寫的乘法演算法（用遞迴加法實作）：
-\end{itemize}
+% \begin{frame}[fragile]{進階補充：LISP 程式碼範例（可略過）}
+% \begin{itemize}
+%     \item 以下是用 LISP 撰寫的乘法演算法（用遞迴加法實作）：
+% \end{itemize}
 
-\vspace{0.5em}
-\begin{lstlisting}[style=lispstyle]
-(defun multiply (a b)
-  (if (= b 0)
-      0
-      (+ a (multiply a (- b 1)))))
+% \vspace{0.5em}
+% \begin{lstlisting}[style=lispstyle]
+% (defun multiply (a b)
+%   (if (= b 0)
+%       0
+%       (+ a (multiply a (- b 1)))))
 
-(print (multiply 12 5))
-\end{lstlisting}
+% (print (multiply 12 5))
+% \end{lstlisting}
 
-\vspace{1em}
-\begin{block}{數學上的遞迴定義}
-\[
-a \times b =
-\begin{cases}
-0 & \text{如果 } b = 0 \\
-a + (a \times (b - 1)) & \text{如果 } b > 0
-\end{cases}
-\]
-\end{block}
-\end{frame}
+% \vspace{1em}
+% \begin{block}{數學上的遞迴定義}
+% \[
+% a \times b =
+% \begin{cases}
+% 0 & \text{如果 } b = 0 \\
+% a + (a \times (b - 1)) & \text{如果 } b > 0
+% \end{cases}
+% \]
+% \end{block}
+% \end{frame}
 
 \begin{frame}{為什麼要學資料結構與演算法？}
 \begin{itemize}

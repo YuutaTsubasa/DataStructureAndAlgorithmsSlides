@@ -2,7 +2,21 @@
 \usetheme{Madrid}
 
 \usepackage{xeCJK}
-\setCJKmainfont{Noto Sans CJK TC}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
 
 \usepackage{amsmath}
 \usepackage{graphicx}
