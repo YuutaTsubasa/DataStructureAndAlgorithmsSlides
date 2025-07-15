@@ -54,7 +54,8 @@ xelatex chapter0.tex
 ```bash
 .
 ├── chapter0.tex            # 第一章：簡介
-├── chapter1.tex            # 第二章：複雜度分析（敬請期待）
+├── chapter1.tex            # 第二章：複雜度分析
+├── ...                     # 後續的章節
 ├── images/                 # 投影片用圖
 │   ├── array_example.png
 │   ├── sort_example_students.png
