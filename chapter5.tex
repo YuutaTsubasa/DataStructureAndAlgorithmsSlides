@@ -1,0 +1,352 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\begin{document}
+
+\title{資料結構與演算法入門：第 5 章}
+\subtitle{進階陣列與連結串列 (Advanced Array \& Linked List)}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\frame{\titlepage}
+
+\begin{frame}{回顧：基本陣列}
+\begin{itemize}
+    \item 陣列是最基礎的資料結構
+    \item 特點：
+    \begin{itemize}
+        \item 元素在記憶體中連續存放
+        \item 支援隨機存取（$O(1)$ 時間）
+        \item 大小通常固定
+    \end{itemize}
+    \item 缺點：
+    \begin{itemize}
+        \item 插入和刪除操作代價高（$O(n)$）
+        \item 空間利用率可能不佳
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+\textbf{如何改善這些限制？}
+\end{center}
+\end{frame}
+
+\section{自動增長陣列}
+
+\begin{frame}{自動增長陣列 (Dynamic Array)}
+\begin{itemize}
+    \item 也稱為動態陣列、可變陣列
+    \item 可以在執行時期動態調整大小
+    \item 常見實作：C++ 的 vector、Java 的 ArrayList、Python 的 list
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{核心概念}
+\begin{itemize}
+    \item \textbf{容量 (Capacity)：}實際分配的記憶體大小
+    \item \textbf{大小 (Size)：}目前存放的元素數量
+    \item 當容量不足時，重新分配更大的記憶體空間
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{動態陣列的擴充策略}
+\begin{itemize}
+    \item \textbf{倍增策略：}容量不足時擴充為原來的 2 倍
+    \item \textbf{優點：}分攤時間複雜度低
+    \item \textbf{過程：}
+    \begin{enumerate}
+        \item 分配新的記憶體空間（通常是原來的 2 倍）
+        \item 將舊資料複製到新空間
+        \item 釋放舊的記憶體空間
+        \item 更新指標
+    \end{enumerate}
+\end{itemize}
+
+\vspace{1em}
+\textbf{分攤分析：}雖然單次擴充需要 $O(n)$ 時間，但平均每次插入只需 $O(1)$ 時間
+
+\vspace{1em}
+\textbf{待補充：動態陣列實作與分攤分析詳解}
+\end{frame}
+
+\section{單向連結串列}
+
+\begin{frame}{單向連結串列 (Single Linked List)}
+\begin{itemize}
+    \item 由節點（Node）組成的線性資料結構
+    \item 每個節點包含：
+    \begin{itemize}
+        \item 資料 (Data)
+        \item 指向下一個節點的指標 (Next)
+    \end{itemize}
+    \item 第一個節點稱為頭節點 (Head)
+    \item 最後一個節點的 Next 指標為 NULL
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+\textbf{待補充：單向連結串列圖解}
+\end{center}
+\end{frame}
+
+\begin{frame}{單向連結串列的基本操作}
+\begin{itemize}
+    \item \textbf{插入 (Insert)：}
+    \begin{itemize}
+        \item 頭部插入：$O(1)$
+        \item 尾部插入：$O(n)$（需要遍歷到最後）
+        \item 指定位置插入：$O(n)$
+    \end{itemize}
+    \item \textbf{刪除 (Delete)：}
+    \begin{itemize}
+        \item 頭部刪除：$O(1)$
+        \item 指定節點刪除：$O(n)$
+    \end{itemize}
+    \item \textbf{搜尋 (Search)：}$O(n)$
+    \item \textbf{存取 (Access)：}$O(n)$
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：各種操作的程式碼實作}
+\end{frame}
+
+\section{雙向連結串列}
+
+\begin{frame}{雙向連結串列 (Double Linked List)}
+\begin{itemize}
+    \item 每個節點包含三個部分：
+    \begin{itemize}
+        \item 資料 (Data)
+        \item 指向前一個節點的指標 (Previous)
+        \item 指向下一個節點的指標 (Next)
+    \end{itemize}
+    \item 可以雙向遍歷
+    \item 刪除操作更加高效
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{優點}
+\begin{itemize}
+    \item 可以從任意節點向前或向後遍歷
+    \item 刪除指定節點時不需要額外的前驅節點資訊
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\begin{block}{缺點}
+\begin{itemize}
+    \item 每個節點需要額外的指標空間
+    \item 插入和刪除操作需要更新更多指標
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{雙向連結串列的操作}
+\begin{itemize}
+    \item \textbf{插入操作：}需要更新 4 個指標
+    \begin{itemize}
+        \item 新節點的 prev 和 next
+        \item 前驅節點的 next
+        \item 後繼節點的 prev
+    \end{itemize}
+    \item \textbf{刪除操作：}需要更新 2 個指標
+    \begin{itemize}
+        \item 前驅節點的 next 指向後繼節點
+        \item 後繼節點的 prev 指向前驅節點
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：雙向連結串列圖解與程式碼實作}
+\end{frame}
+
+\section{環狀連結串列}
+
+\begin{frame}{環狀連結串列 (Cyclic Linked List)}
+\begin{itemize}
+    \item 最後一個節點的 next 指標指向第一個節點
+    \item 形成一個環狀結構
+    \item 可以是單向環狀或雙向環狀
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{特點}
+\begin{itemize}
+    \item 沒有明確的開始和結束
+    \item 可以從任意節點遍歷整個串列
+    \item 需要特別注意避免無窮迴圈
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\begin{block}{應用場景}
+\begin{itemize}
+    \item 循環任務調度
+    \item 音樂播放器的循環播放
+    \item 遊戲中的輪流機制
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{環狀連結串列的實作要點}
+\begin{itemize}
+    \item \textbf{建立環狀結構：}
+    \begin{itemize}
+        \item 最後一個節點的 next 指向頭節點
+        \item 雙向環狀中，頭節點的 prev 指向最後一個節點
+    \end{itemize}
+    \item \textbf{遍歷：}需要記錄起始節點，避免無窮迴圈
+    \item \textbf{插入和刪除：}需要考慮邊界情況
+\end{itemize}
+
+\vspace{1em}
+\textbf{環的檢測：}Floyd's Cycle Detection Algorithm (龜兔賽跑演算法)
+
+\vspace{1em}
+\textbf{待補充：環狀連結串列實作與環檢測演算法}
+\end{frame}
+
+\section{連結串列應用舉例}
+
+\begin{frame}{舉例一：LRU Cache 實作}
+\begin{itemize}
+    \item LRU (Least Recently Used) 快取機制
+    \item 使用雙向連結串列 + 雜湊表
+    \item 雙向連結串列維護使用順序
+    \item 雜湊表提供 $O(1)$ 查找
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{操作流程}
+\begin{itemize}
+    \item \textbf{Get：}移動節點到頭部
+    \item \textbf{Put：}插入新節點到頭部，必要時刪除尾部節點
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：LRU Cache 完整實作}
+\end{frame}
+
+\begin{frame}{舉例二：多項式運算}
+\begin{itemize}
+    \item 使用連結串列表示稀疏多項式
+    \item 每個節點存放係數和指數
+    \item 只儲存非零項，節省空間
+\end{itemize}
+
+\vspace{1em}
+\textbf{範例：}$3x^5 + 2x^3 - x + 7$
+
+\vspace{1em}
+\begin{center}
+\textbf{待補充：多項式連結串列表示與加法運算}
+\end{center}
+\end{frame}
+
+\begin{frame}{舉例三：約瑟夫問題 (Josephus Problem)}
+\begin{itemize}
+    \item \textbf{問題：}$n$ 個人圍成圓圈，從第一個人開始數，每數到第 $k$ 個人就將其移除，求最後剩下的人的位置
+    \item \textbf{解法：}使用環狀連結串列模擬過程
+    \item 每次移除一個節點，直到只剩一個節點
+\end{itemize}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(nk)$\\
+\textbf{空間複雜度：}$O(n)$
+
+\vspace{1em}
+\textbf{數學解法：}$J(n, k) = (J(n-1, k) + k) \bmod n$
+
+\vspace{1em}
+\textbf{待補充：約瑟夫問題的連結串列解法與數學公式推導}
+\end{frame}
+
+\begin{frame}{陣列 vs 連結串列比較}
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|>{\centering\arraybackslash}m{2.5cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2.5cm}|}
+\hline
+\textbf{操作} & \textbf{陣列} & \textbf{連結串列} & \textbf{動態陣列} \\
+\hline
+隨機存取 & $O(1)$ & $O(n)$ & $O(1)$ \\
+\hline
+頭部插入 & $O(n)$ & $O(1)$ & $O(n)$ \\
+\hline
+尾部插入 & $O(1)$ & $O(n)$ & $O(1)$ 分攤 \\
+\hline
+頭部刪除 & $O(n)$ & $O(1)$ & $O(n)$ \\
+\hline
+記憶體使用 & 連續 & 分散 & 連續 \\
+\hline
+額外空間 & 無 & 指標 & 可能未滿 \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{本章總結}
+\begin{itemize}
+    \item \textbf{自動增長陣列：}結合陣列和動態調整的優點
+    \item \textbf{連結串列類型：}
+    \begin{itemize}
+        \item 單向連結串列：簡單，插入刪除靈活
+        \item 雙向連結串列：可雙向遍歷，刪除更高效
+        \item 環狀連結串列：適合循環性質的問題
+    \end{itemize}
+    \item \textbf{選擇準則：}
+    \begin{itemize}
+        \item 需要隨機存取 → 陣列或動態陣列
+        \item 頻繁插入刪除 → 連結串列
+        \item 記憶體使用敏感 → 考慮額外指標開銷
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+    \textbf{理解不同資料結構的特性，選擇最適合的工具！}
+\end{center}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,441 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\begin{document}
+
+\title{資料結構與演算法入門：第 9 章}
+\subtitle{堆積 (Heap)}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\frame{\titlepage}
+
+\begin{frame}{什麼是堆積？}
+\begin{itemize}
+    \item 堆積（Heap）是一種特殊的完全二元樹
+    \item 滿足堆積性質（Heap Property）
+    \item 通常用陣列實作，節省指標空間
+    \item 是優先佇列（Priority Queue）的最佳實作方式
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{堆積性質}
+\begin{itemize}
+    \item \textbf{最大堆積（Max Heap）：}父節點的值 ≥ 子節點的值
+    \item \textbf{最小堆積（Min Heap）：}父節點的值 ≤ 子節點的值
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{注意：}堆積不是二元搜尋樹！只保證父子關係，不保證左右關係
+
+\vspace{1em}
+\begin{center}
+\textbf{待補充：最大堆積與最小堆積圖解}
+\end{center>
+\end{frame}
+
+\begin{frame}{堆積的陣列表示法}
+\begin{itemize}
+    \item 使用陣列儲存完全二元樹
+    \item 節點與陣列索引的對應關係（從索引 1 開始）：
+    \begin{itemize}
+        \item 父節點：$\lfloor i/2 \rfloor$
+        \item 左子節點：$2i$
+        \item 右子節點：$2i + 1$
+    \end{itemize}
+    \item 根節點在索引 1，索引 0 可以作為哨兵
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{優點}
+\begin{itemize}
+    \item 不需要額外的指標空間
+    \item 快速計算父子關係
+    \item 記憶體存取具有良好的局部性
+\end{itemize>
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：陣列表示法圖解與索引計算示例}
+\end{frame}
+
+\begin{frame}{堆積的基本操作}
+\begin{itemize}
+    \item \textbf{插入（Insert）：}在堆積末端加入新元素，然後上浮
+    \item \textbf{刪除最值（Extract-Max/Min）：}移除根節點，重新調整堆積
+    \item \textbf{查看最值（Peek）：}返回根節點的值
+    \item \textbf{建堆（Build Heap）：}將任意陣列轉換成堆積
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{輔助操作}
+\begin{itemize}
+    \item \textbf{上浮（Heapify Up）：}向上調整維持堆積性質
+    \item \textbf{下沉（Heapify Down）：}向下調整維持堆積性質
+\end{itemize>
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}
+\begin{itemize}
+    \item 插入、刪除：$O(\log n)$
+    \item 查看最值：$O(1)$
+    \item 建堆：$O(n)$
+\end{itemize>
+\end{frame}
+
+\begin{frame}{插入操作 (Insert)}
+\begin{itemize>
+    \item 將新元素加入陣列末端（堆積的最後位置）
+    \item 與父節點比較，如果違反堆積性質就交換
+    \item 重複此過程直到滿足堆積性質或到達根節點
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{上浮（Heapify Up）演算法}
+\begin{enumerate}
+    \item 從新插入的節點開始
+    \item 與父節點比較
+    \item 如果違反堆積性質，交換位置
+    \item 繼續向上檢查，直到滿足條件
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{最壞情況：}新元素需要移動到根節點，需要 $O(\log n)$ 時間
+
+\vspace{1em}
+\textbf{待補充：插入操作圖解與程式碼實作}
+\end{frame}
+
+\begin{frame}{刪除最值操作 (Extract-Max/Min)}
+\begin{itemize>
+    \item 移除根節點（最大值或最小值）
+    \item 將最後一個元素移到根節點位置
+    \item 透過下沉操作重新調整堆積
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{下沉（Heapify Down）演算法}
+\begin{enumerate}
+    \item 從根節點開始
+    \item 與子節點比較，找出最大/最小的子節點
+    \item 如果違反堆積性質，與該子節點交換
+    \item 繼續向下檢查，直到滿足條件或到達葉節點
+\end{enumerate}
+\end{block>
+
+\vspace{1em}
+\textbf{最壞情況：}元素需要移動到葉節點，需要 $O(\log n)$ 時間
+
+\vspace{1em}
+\textbf{待補充：刪除操作圖解與程式碼實作}
+\end{frame}
+
+\begin{frame}{建堆操作 (Build Heap)}
+\begin{itemize>
+    \item 將任意陣列轉換成堆積
+    \item 從最後一個非葉節點開始，向前進行下沉操作
+    \item 最後一個非葉節點的索引：$\lfloor n/2 \rfloor$
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{建堆演算法}
+\begin{enumerate}
+    \item 從索引 $\lfloor n/2 \rfloor$ 開始
+    \item 對每個節點執行下沉操作
+    \item 向前移動到索引 1（根節點）
+\end{enumerate>
+\end{block>
+
+\vspace{1em}
+\textbf{時間複雜度分析：}
+\begin{itemize}
+    \item 看似 $O(n \log n)$，實際上是 $O(n)$
+    \item 大部分節點都在樹的底層，下沉距離很短
+\end{itemize>
+
+\vspace{1em}
+\textbf{待補充：建堆過程演示與複雜度分析}
+\end{frame>
+
+\section{優先佇列}
+
+\begin{frame}{什麼是優先佇列？}
+\begin{itemize>
+    \item 不是先進先出（FIFO），而是按優先級服務
+    \item 每個元素都有一個優先級
+    \item 優先級高的元素先被處理
+    \item 堆積是實作優先佇列的最佳資料結構
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{基本操作}
+\begin{itemize>
+    \item \textbf{Insert：}插入帶有優先級的元素
+    \item \textbf{Extract-Max/Min：}取出優先級最高/最低的元素
+    \item \textbf{Peek：}查看最高優先級元素
+    \item \textbf{Change Priority：}修改元素的優先級
+\end{itemize>
+\end{block>
+
+\vspace{1em}
+\begin{center>
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
+\hline
+\textbf{實作方式} & \textbf{插入} & \textbf{取出最值} \\
+\hline
+未排序陣列 & $O(1)$ & $O(n)$ \\
+\hline
+已排序陣列 & $O(n)$ & $O(1)$ \\
+\hline
+堆積 & $O(\log n)$ & $O(\log n)$ \\
+\hline
+\end{tabular}
+\end{center>
+\end{frame>
+
+\begin{frame}{優先佇列的應用}
+\begin{itemize>
+    \item \textbf{作業調度：}作業系統根據優先級調度程序
+    \item \textbf{Dijkstra 演算法：}尋找最短路徑
+    \item \textbf{A* 搜尋：}啟發式搜尋演算法
+    \item \textbf{霍夫曼編碼：}資料壓縮演算法
+    \item \textbf{事件模擬：}按時間順序處理事件
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{實際例子}
+\begin{itemize>
+    \item 醫院急診室的病患排隊
+    \item 印表機工作佇列
+    \item 網路封包路由
+\end{itemize>
+\end{block>
+
+\vspace{1em}
+\textbf{待補充：優先佇列應用實例與程式碼}
+\end{frame>
+
+\section{堆積排序}
+
+\begin{frame}{堆積排序 (Heap Sort)}
+\begin{itemize>
+    \item 利用堆積資料結構進行排序
+    \item 分為兩個階段：建堆和排序
+    \item 原地排序演算法，空間複雜度 $O(1)$
+    \item 時間複雜度穩定為 $O(n \log n)$
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{堆積排序演算法}
+\begin{enumerate>
+    \item \textbf{建堆階段：}將陣列轉換成最大堆積
+    \item \textbf{排序階段：}
+    \begin{itemize>
+        \item 將根節點（最大值）與最後一個元素交換
+        \item 減少堆積大小
+        \item 對根節點進行下沉操作
+        \item 重複直到堆積大小為 1
+    \end{itemize>
+\end{enumerate>
+\end{block>
+
+\vspace{1em}
+\textbf{結果：}遞增排序的陣列
+\end{frame>
+
+\begin{frame}{堆積排序的特性}
+\begin{itemize>
+    \item \textbf{時間複雜度：}$O(n \log n)$（所有情況）
+    \item \textbf{空間複雜度：}$O(1)$（原地排序）
+    \item \textbf{穩定性：}不穩定
+    \item \textbf{適應性：}不是自適應演算法
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{與其他排序比較}
+\begin{itemize>
+    \item vs 快速排序：時間複雜度更穩定，但平均情況較慢
+    \item vs 合併排序：空間複雜度更好，但不穩定
+    \item vs 插入排序：大資料效率更高，但小資料較慢
+\end{itemize>
+\end{block>
+
+\vspace{1em}
+\textbf{適用場景：}
+\begin{itemize>
+    \item 需要穩定的 $O(n \log n)$ 效能
+    \item 記憶體使用受限
+    \item 不要求穩定性
+\end{itemize>
+
+\vspace{1em}
+\textbf{待補充：堆積排序完整演示與程式碼}
+\end{frame>
+
+\section{堆積的變形與應用}
+
+\begin{frame}{二項堆積 (Binomial Heap)}
+\begin{itemize>
+    \item 由多個二項樹組成的堆積結構
+    \item 支援快速的合併操作
+    \item 每個二項樹滿足堆積性質
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{二項樹性質}
+\begin{itemize>
+    \item $B_0$ 只有一個節點
+    \item $B_k$ 由兩個 $B_{k-1}$ 組成
+    \item $B_k$ 有 $2^k$ 個節點，高度為 $k$
+\end{itemize>
+\end{block>
+
+\vspace{1em}
+\textbf{操作複雜度：}
+\begin{itemize>
+    \item 合併：$O(\log n)$
+    \item 插入：$O(\log n)$
+    \item 取最小值：$O(\log n)$
+\end{itemize>
+
+\vspace{1em}
+\textbf{待補充：二項堆積結構圖與合併操作}
+\end{frame>
+
+\begin{frame}{費波那契堆積 (Fibonacci Heap)}
+\begin{itemize>
+    \item 更進階的堆積結構
+    \item 支援分攤 $O(1)$ 的插入和減少鍵值操作
+    \item 在圖演算法中有重要應用
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{主要優勢}
+\begin{itemize>
+    \item 插入：$O(1)$ 分攤時間
+    \item 合併：$O(1)$ 時間
+    \item 減少鍵值：$O(1)$ 分攤時間
+    \item 取最小值：$O(\log n)$ 分攤時間
+\end{itemize>
+\end{block>
+
+\vspace{1em}
+\textbf{應用：}
+\begin{itemize>
+    \item Dijkstra 最短路徑演算法
+    \item Prim 最小生成樹演算法
+\end{itemize>
+
+\vspace{1em}
+\textbf{待補充：費波那契堆積在圖演算法中的應用}
+\end{frame>
+
+\begin{frame}{堆積的實際應用舉例}
+\begin{itemize>
+    \item \textbf{Top-K 問題：}找出最大或最小的 K 個元素
+    \item \textbf{即時系統：}任務調度和截止時間管理
+    \item \textbf{資料流處理：}維護滑動視窗的統計資訊
+    \item \textbf{圖演算法：}最短路徑、最小生成樹
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{Top-K 問題解法}
+\begin{itemize>
+    \item 使用大小為 K 的最小堆積
+    \item 遍歷所有元素，維護堆積中的最大 K 個元素
+    \item 時間複雜度：$O(n \log k)$
+    \item 空間複雜度：$O(k)$
+\end{itemize>
+\end{block>
+
+\vspace{1em}
+\textbf{待補充：Top-K 問題詳細解法與程式碼}
+\end{frame>
+
+\begin{frame}{堆積實作的注意事項}
+\begin{itemize>
+    \item \textbf{索引選擇：}從 0 或 1 開始各有優缺點
+    \item \textbf{比較函數：}需要一致性，支援自定義比較
+    \item \textbf{容量管理：}動態調整陣列大小
+    \item \textbf{邊界檢查：}避免陣列越界
+\end{itemize>
+
+\vspace{1em}
+\begin{block}{常見錯誤}
+\begin{itemize>
+    \item 索引計算錯誤
+    \item 堆積性質維護不當
+    \item 比較函數不一致
+    \item 忘記更新堆積大小
+\end{itemize>
+\end{block>
+
+\vspace{1em}
+\textbf{最佳實踐：}
+\begin{itemize>
+    \item 使用現成的優先佇列庫（如 C++ priority_queue）
+    \item 充分測試邊界情況
+    \item 考慮使用泛型實作
+\end{itemize>
+\end{frame>
+
+\begin{frame}{本章總結}
+\begin{itemize>
+    \item \textbf{堆積：}完全二元樹，滿足堆積性質
+    \item \textbf{基本操作：}插入、刪除、建堆，時間複雜度 $O(\log n)$ 或更好
+    \item \textbf{優先佇列：}堆積是最佳實作方式
+    \item \textbf{堆積排序：}穩定 $O(n \log n)$，原地排序
+    \item \textbf{進階堆積：}二項堆積、費波那契堆積
+    \item \textbf{應用：}Top-K、調度、圖演算法、事件模擬
+\end{itemize}
+
+\vspace{1em}
+\begin{center>
+    \textbf{堆積是優先級處理的最佳工具！}
+\end{center>
+\end{frame>
+
+\end{document>
