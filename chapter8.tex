@@ -1,0 +1,519 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{forest}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\begin{document}
+
+\title{資料結構與演算法入門：第 8 章}
+\subtitle{樹 (Tree)}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\frame{\titlepage}
+
+\begin{frame}{什麼是樹？}
+\begin{itemize}
+    \item 樹是一種階層式的資料結構
+    \item 由節點（Node）和邊（Edge）組成
+    \item 有一個根節點（Root），其他節點形成子樹
+    \item 沒有環路（Cycle）的連通圖
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{基本術語}
+\begin{itemize}
+    \item \textbf{根節點：}沒有父節點的節點
+    \item \textbf{葉節點：}沒有子節點的節點
+    \item \textbf{深度：}從根節點到某節點的邊數
+    \item \textbf{高度：}從某節點到最深葉節點的邊數
+    \item \textbf{度：}節點的子節點數量
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\begin{center}
+\textbf{待補充：樹的結構圖解與術語標示}
+\end{center}
+\end{frame}
+
+\begin{frame}{二元樹 (Binary Tree)}
+\begin{itemize}
+    \item 每個節點最多有兩個子節點
+    \item 子節點分為左子節點和右子節點
+    \item 是最常用的樹結構
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{特殊的二元樹}
+\begin{itemize}
+    \item \textbf{滿二元樹：}每個節點都有 0 或 2 個子節點
+    \item \textbf{完全二元樹：}除了最後一層，其他層都填滿，最後一層從左到右填充
+    \item \textbf{完美二元樹：}所有葉節點都在同一層，所有內部節點都有兩個子節點
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{性質：}
+\begin{itemize}
+    \item 高度為 $h$ 的二元樹最多有 $2^{h+1} - 1$ 個節點
+    \item $n$ 個節點的完全二元樹高度為 $\lfloor \log_2 n \rfloor$
+\end{itemize}
+\end{frame}
+
+\section{樹的遍歷}
+
+\begin{frame}{前序遍歷 (Preorder Traversal)}
+\begin{itemize}
+    \item 訪問順序：根 → 左子樹 → 右子樹
+    \item 遞迴定義：
+    \begin{enumerate}
+        \item 訪問根節點
+        \item 前序遍歷左子樹
+        \item 前序遍歷右子樹
+    \end{enumerate}
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{應用}
+\begin{itemize}
+    \item 複製樹結構
+    \item 建立表達式的前綴表示法
+    \item 樹的序列化
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n)$\\
+\textbf{空間複雜度：}$O(h)$，$h$ 為樹的高度
+
+\vspace{1em}
+\textbf{待補充：前序遍歷程式碼（遞迴與迭代版本）}
+\end{frame}
+
+\begin{frame}{中序遍歷 (Inorder Traversal)}
+\begin{itemize}
+    \item 訪問順序：左子樹 → 根 → 右子樹
+    \item 遞迴定義：
+    \begin{enumerate}
+        \item 中序遍歷左子樹
+        \item 訪問根節點
+        \item 中序遍歷右子樹
+    \end{enumerate}
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{特殊性質}
+\begin{itemize}
+    \item 對於二元搜尋樹，中序遍歷結果是有序的
+    \item 可用於檢驗二元搜尋樹的正確性
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{應用：}
+\begin{itemize}
+    \item 表達式樹的中綴表示法
+    \item 二元搜尋樹的排序輸出
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：中序遍歷程式碼與 BST 應用示例}
+\end{frame}
+
+\begin{frame}{後序遍歷 (Postorder Traversal)}
+\begin{itemize}
+    \item 訪問順序：左子樹 → 右子樹 → 根
+    \item 遞迴定義：
+    \begin{enumerate}
+        \item 後序遍歷左子樹
+        \item 後序遍歷右子樹
+        \item 訪問根節點
+    \end{enumerate}
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{應用}
+\begin{itemize}
+    \item 刪除樹的所有節點（從葉到根）
+    \item 計算目錄大小
+    \item 表達式樹的後綴表示法
+    \item 計算樹的高度
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{特點：}在訪問節點之前，所有子節點都已經被訪問
+
+\vspace{1em}
+\textbf{待補充：後序遍歷程式碼與計算樹高範例}
+\end{frame}
+
+\section{廣度優先搜尋與深度優先搜尋}
+
+\begin{frame}{廣度優先搜尋 (BFS)}
+\begin{itemize}
+    \item 按層級順序訪問節點
+    \item 先訪問同一層的所有節點，再訪問下一層
+    \item 使用佇列（Queue）實作
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法步驟}
+\begin{enumerate}
+    \item 將根節點加入佇列
+    \item 當佇列不為空時：
+    \begin{itemize}
+        \item 從佇列取出一個節點
+        \item 訪問該節點
+        \item 將其子節點加入佇列
+    \end{itemize}
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{應用：}
+\begin{itemize}
+    \item 層序遍歷
+    \item 尋找最短路徑
+    \item 檢測連通性
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：BFS 程式碼實作與視覺化}
+\end{frame}
+
+\begin{frame}{深度優先搜尋 (DFS)}
+\begin{itemize}
+    \item 先深入探索一條路徑，直到無法繼續為止
+    \item 然後回溯，探索其他路徑
+    \item 可以使用遞迴或堆疊實作
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{DFS vs 樹的遍歷}
+\begin{itemize}
+    \item 前序遍歷 = DFS 訪問節點的順序
+    \item DFS 可以用於一般圖，不只是樹
+    \item 可以檢測環路和連通性
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{應用：}
+\begin{itemize}
+    \item 拓撲排序
+    \item 尋找路徑
+    \item 連通性檢測
+    \item 回溯演算法
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：DFS 遞迴與迭代實作}
+\end{frame}
+
+\section{二元搜尋樹}
+
+\begin{frame}{二元搜尋樹 (Binary Search Tree, BST)}
+\begin{itemize}
+    \item 一種特殊的二元樹，滿足搜尋性質
+    \item 對於任意節點：
+    \begin{itemize}
+        \item 左子樹的所有節點值 < 該節點值
+        \item 右子樹的所有節點值 > 該節點值
+    \end{itemize}
+    \item 中序遍歷得到有序序列
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{基本操作}
+\begin{itemize}
+    \item \textbf{搜尋：}從根開始，比較並選擇左或右子樹
+    \item \textbf{插入：}找到適當位置插入新節點
+    \item \textbf{刪除：}三種情況（無子節點、一個子節點、兩個子節點）
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{平均時間複雜度：}$O(\log n)$\\
+\textbf{最壞時間複雜度：}$O(n)$（退化為鏈表）
+\end{frame}
+
+\begin{frame}{BST 刪除操作}
+\begin{itemize}
+    \item BST 中最複雜的操作
+    \item 需要保持 BST 性質
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{三種情況}
+\begin{enumerate}
+    \item \textbf{葉節點：}直接刪除
+    \item \textbf{一個子節點：}用子節點替換
+    \item \textbf{兩個子節點：}
+    \begin{itemize}
+        \item 找到右子樹的最小值（或左子樹的最大值）
+        \item 用該值替換要刪除的節點值
+        \item 刪除該最小值節點（遞迴）
+    \end{itemize}
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：BST 刪除操作圖解與程式碼}
+\end{frame}
+
+\section{平衡樹}
+
+\begin{frame}{為什麼需要平衡樹？}
+\begin{itemize}
+    \item BST 在最壞情況下退化為鏈表，操作變成 $O(n)$
+    \item 平衡樹透過旋轉操作維持平衡
+    \item 保證操作的時間複雜度為 $O(\log n)$
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{平衡的定義}
+\begin{itemize}
+    \item 任意節點的左右子樹高度差不超過某個常數
+    \item 不同平衡樹有不同的平衡條件
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\begin{center}
+\textbf{常見的平衡樹：AVL 樹、紅黑樹}
+\end{center}
+\end{frame}
+
+\begin{frame}{AVL 樹}
+\begin{itemize}
+    \item 最早的自平衡二元搜尋樹
+    \item 平衡條件：任意節點的左右子樹高度差 ≤ 1
+    \item 通過旋轉操作維持平衡
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{四種旋轉操作}
+\begin{itemize}
+    \item \textbf{LL 旋轉：}右旋
+    \item \textbf{RR 旋轉：}左旋
+    \item \textbf{LR 旋轉：}先左旋再右旋
+    \item \textbf{RL 旋轉：}先右旋再左旋
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}所有操作 $O(\log n)$\\
+\textbf{空間複雜度：}$O(n)$
+
+\vspace{1em}
+\textbf{待補充：AVL 樹旋轉操作圖解與實作}
+\end{frame}
+
+\begin{frame}{紅黑樹 (Red-Black Tree)}
+\begin{itemize}
+    \item 另一種自平衡二元搜尋樹
+    \item 每個節點有顏色（紅或黑）
+    \item 通過顏色規則維持近似平衡
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{紅黑樹性質}
+\begin{enumerate}
+    \item 每個節點不是紅色就是黑色
+    \item 根節點是黑色
+    \item 所有葉節點（NIL）是黑色
+    \item 紅色節點的子節點必須是黑色
+    \item 從任意節點到其葉節點的路徑包含相同數量的黑色節點
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{優點：}插入和刪除的旋轉次數較 AVL 樹少\\
+\textbf{應用：}C++ STL、Java TreeMap
+
+\vspace{1em}
+\textbf{待補充：紅黑樹性質說明與應用實例}
+\end{frame}
+
+\section{特殊樹結構}
+
+\begin{frame}{線段樹 (Segment Tree)}
+\begin{itemize}
+    \item 用於解決區間查詢問題的樹結構
+    \item 每個節點代表一個區間，儲存該區間的資訊
+    \item 支援 $O(\log n)$ 的區間更新和查詢
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{常見應用}
+\begin{itemize}
+    \item 區間最小值查詢（RMQ）
+    \item 區間和查詢
+    \item 區間最大值查詢
+    \item 懶惰傳播（Lazy Propagation）
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{建構時間：}$O(n)$\\
+\textbf{查詢/更新時間：}$O(\log n)$\\
+\textbf{空間複雜度：}$O(n)$
+
+\vspace{1em}
+\textbf{待補充：線段樹結構圖與基本操作實作}
+\end{frame}
+
+\begin{frame}{Fenwick 樹 (Binary Indexed Tree)}
+\begin{itemize}
+    \item 也稱為二進位索引樹
+    \item 專門用於計算前綴和（Prefix Sum）
+    \item 比線段樹更節省空間，實作更簡單
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{核心概念}
+\begin{itemize}
+    \item 利用二進位表示的性質
+    \item 每個位置儲存特定長度的區間和
+    \item 透過位元運算快速定位
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{lowbit 函數：}\texttt{x \& (-x)}\\
+\textbf{更新：}$O(\log n)$\\
+\textbf{查詢：}$O(\log n)$\\
+\textbf{空間：}$O(n)$
+
+\vspace{1em}
+\textbf{待補充：Fenwick 樹原理解釋與程式碼實作}
+\end{frame}
+
+\section{樹的應用舉例}
+
+\begin{frame}{舉例一：檔案系統}
+\begin{itemize}
+    \item 作業系統使用樹結構組織檔案和目錄
+    \item 每個目錄是一個節點，檔案是葉節點
+    \item 支援路徑導航和權限管理
+\end{itemize}
+
+\vspace{1em}
+\textbf{操作：}
+\begin{itemize}
+    \item 建立目錄/檔案
+    \item 刪除目錄/檔案
+    \item 搜尋檔案
+    \item 遍歷目錄結構
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：檔案系統樹結構圖解}
+\end{frame}
+
+\begin{frame}{舉例二：表達式樹}
+\begin{itemize}
+    \item 數學表達式的樹狀表示
+    \item 運算子作為內部節點，運算元作為葉節點
+    \item 可以用不同遍歷方式得到不同表示法
+\end{itemize}
+
+\vspace{1em}
+\textbf{遍歷結果：}
+\begin{itemize}
+    \item 前序遍歷 → 前綴表示法
+    \item 中序遍歷 → 中綴表示法
+    \item 後序遍歷 → 後綴表示法
+\end{itemize}
+
+\vspace{1em}
+\textbf{應用：}編譯器、計算器
+
+\vspace{1em}
+\textbf{待補充：表達式樹範例與不同表示法轉換}
+\end{frame}
+
+\begin{frame}{舉例三：決策樹}
+\begin{itemize}
+    \item 機器學習中的分類演算法
+    \item 每個內部節點代表一個特徵測試
+    \item 每個葉節點代表一個分類結果
+    \item 從根到葉的路徑代表決策規則
+\end{itemize}
+
+\vspace{1em}
+\textbf{優點：}
+\begin{itemize}
+    \item 易於理解和解釋
+    \item 可以處理數值和類別特徵
+    \item 不需要特徵正規化
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：決策樹範例與構建過程}
+\end{frame}
+
+\begin{frame}{本章總結}
+\begin{itemize}
+    \item \textbf{樹的遍歷：}前序、中序、後序、BFS、DFS
+    \item \textbf{二元搜尋樹：}基本操作，刪除的複雜性
+    \item \textbf{平衡樹：}
+    \begin{itemize}
+        \item AVL 樹：嚴格平衡，旋轉操作
+        \item 紅黑樹：近似平衡，顏色規則
+    \end{itemize}
+    \item \textbf{特殊樹：}
+    \begin{itemize}
+        \item 線段樹：區間查詢問題
+        \item Fenwick 樹：前綴和計算
+    \end{itemize}
+    \item 樹是許多高級資料結構和演算法的基礎
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+    \textbf{掌握樹結構，開啟高效演算法之門！}
+\end{center}
+\end{frame}
+
+\end{document}
