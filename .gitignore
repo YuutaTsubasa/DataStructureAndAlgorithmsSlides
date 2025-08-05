@@ -1,1 +1,23 @@
 act.exe
+
+# LaTeX build files
+*.aux
+*.log
+*.out
+*.toc
+*.nav
+*.snm
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.pdf
+*.vrb
+
+# VSCode settings
+.vscode/
+
+# Mac 系統檔
+.DS_Store
+
+# 其他暫存或壓縮檔
+*.zip

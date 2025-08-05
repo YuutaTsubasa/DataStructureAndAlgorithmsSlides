@@ -146,10 +146,11 @@ vector<int> nums = {1, 3, 5, 7, 9};
 int target = 10;
 unordered_set<int> seen;
 
+bool isFound = false;
 for (int num : nums) {
     if (seen.find(target - num) != seen.end()) {
         // 找到了 num + (target - num) = target
-        found = true;
+        isFound = true;
     }
     seen.insert(num);
 }
@@ -289,7 +290,7 @@ bool findSumBrute(vector<int>& nums, int i, int j, int target) {
     return findSumBrute(nums, i, j + 1, target);
 }
 
-bool found = findSumBrute(nums, 0, 1, 10);
+bool isFound = findSumBrute(nums, 0, 1, 10);
 \end{lstlisting}
 
 \vspace{0.5em}
@@ -297,6 +298,89 @@ bool found = findSumBrute(nums, 0, 1, 10);
     \item 每對 $(i, j)$ 都嘗試一次，時間複雜度為 $O(n^2)$
 \end{itemize}
 \end{frame}
+
+\begin{frame}{什麼是 Backtracking？}
+\begin{itemize}
+    \item Backtracking（回溯法）是一種系統性嘗試所有可能解的技巧。
+    \item 當某一步發現不可行，就會「回溯」到上一步，嘗試其他路線。
+    \item 常用於加速去解決需要列舉所有可能配置的問題（如排列組合、棋盤問題）。
+    \item 常搭配遞迴使用。
+\end{itemize}
+
+\vspace{1em}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\raggedright\arraybackslash}m{6.5cm}|}
+\hline
+\textbf{優點} &
+能有效減少不必要的搜尋路徑 \newline
+適合解決組合、排列、棋盤等問題 \\
+\hline
+\textbf{缺點} &
+最壞情況下仍需窮舉所有可能 \newline
+實作較複雜，需要設計剪枝條件 \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{範例一：解數獨}
+\textbf{題目：} 給定一個 9×9 的數獨盤面，請填入數字使其符合以下規則：
+\begin{itemize}
+    \item 每列、每行、每個 3×3 區塊內不得有重複數字（1–9）
+\end{itemize}
+
+\vspace{0.5em}
+\textbf{解法概念：}
+\begin{itemize}
+    \item 從左上角開始，對每個空格嘗試放 1–9
+    \item 若不違反規則就遞迴嘗試下一格
+    \item 若後續無法完成，就「回溯」並嘗試其他數字
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{數獨遞迴解法}
+\begin{lstlisting}[style=cppstyle]
+bool isValid(int row, int col, int num);
+bool solveSudoku(int row, int col) {
+    if (row == 9) return true; // 全部填完
+    if (col == 9) return solveSudoku(row + 1, 0); // 換行
+
+    if (board[row][col] != 0)
+        return solveSudoku(row, col + 1);
+
+    for (int num = 1; num <= 9; num++) {
+        if (isValid(row, col, num)) {
+            board[row][col] = num;
+            if (solveSudoku(row, col + 1)) return true;
+            board[row][col] = 0; // 回溯
+        }
+    }
+    return false; // 這格無解
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{數獨解法分析}
+\begin{itemize}
+    \item 數獨盤面為 $9 \times 9$，最多 81 個空格，每格最多嘗試 9 種數字
+    \item \textbf{最壞情況時間複雜度：} $O(9^{81})$
+    \item 實際上盤面大小固定，因此這個複雜度可以視為 $O(1)$（常數級）
+    \item \textbf{實際運行通常更快，原因如下：}
+    \begin{itemize}
+        \item 限制條件強（列、行、九宮格不能重複） → 很多數字會被剪枝
+        \item 可以加上技巧加速：
+        \begin{itemize}
+            \item 先預處理已知空格
+            \item 空格依照可填數字數量排序（最少優先原則）
+            \item 用 bitmask 等資料結構快速檢查合法性
+        \end{itemize}
+    \end{itemize}
+    \item 延伸應用：若盤面為 $n \times n$ 數獨，則時間複雜度為 $O( (n^2)^n )$
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}[fragile]{後續待補......}
 待續.....
