@@ -1,0 +1,228 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\begin{document}
+
+\title{資料結構與演算法入門：第 3 章}
+\subtitle{分而治之 (Divide And Conquer)}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\frame{\titlepage}
+
+\begin{frame}{什麼是分而治之？}
+\begin{itemize}
+    \item 分而治之（Divide and Conquer）是一種重要的演算法設計策略
+    \item 核心思想：將大問題拆解成多個較小的子問題
+    \item 遞迴地解決子問題，再將結果合併
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{分而治之的三個步驟}
+\begin{enumerate}
+    \item \textbf{分解（Divide）：}將原問題分解成若干個規模較小的子問題
+    \item \textbf{解決（Conquer）：}遞迴地解決各個子問題
+    \item \textbf{合併（Combine）：}將子問題的解合併成原問題的解
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}{分而治之的時間複雜度分析}
+\begin{itemize}
+    \item 分而治之演算法的時間複雜度通常可以用遞迴關係式表示
+    \item 一般形式：$T(n) = aT(n/b) + f(n)$
+    \begin{itemize}
+        \item $a$：子問題的數量
+        \item $n/b$：每個子問題的規模
+        \item $f(n)$：分解和合併的時間
+    \end{itemize}
+    \item 可使用主定理（Master Theorem）求解
+\end{itemize}
+\end{frame}
+
+\section{Map \& Reduce}
+
+\begin{frame}{Map \& Reduce 概念}
+\begin{itemize}
+    \item Map 和 Reduce 是函數式程式設計中的重要概念
+    \item 也是分而治之思想的體現
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{Map 操作}
+\begin{itemize}
+    \item 對每個資料元素套用相同的函數
+    \item 產生新的資料集合
+    \item 可以平行化處理
+\end{itemize}
+\end{block}
+
+\vspace{0.5em}
+\begin{block}{Reduce 操作}
+\begin{itemize}
+    \item 將資料集合歸約成單一結果
+    \item 使用結合律的操作（如加法、乘法）
+    \item 可以遞迴地進行
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Map \& Reduce 範例：陣列求和}
+\begin{itemize}
+    \item 使用 Map \& Reduce 計算陣列總和
+    \item Map：每個元素乘以 1（恆等操作）
+    \item Reduce：將所有元素相加
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：程式碼範例}
+\end{frame}
+
+\section{分而治之範例}
+
+\begin{frame}{範例一：合併排序 (Merge Sort)}
+\begin{itemize}
+    \item 經典的分而治之演算法
+    \item 分解：將陣列分成兩半
+    \item 解決：遞迴地排序兩個子陣列
+    \item 合併：將兩個已排序的子陣列合併
+\end{itemize}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n \log n)$\\
+\textbf{空間複雜度：}$O(n)$
+
+\vspace{1em}
+\textbf{待補充：程式碼實作}
+\end{frame}
+
+\begin{frame}{範例二：快速排序 (Quick Sort)}
+\begin{itemize}
+    \item 另一個重要的分而治之排序演算法
+    \item 選擇基準點（pivot）
+    \item 分割：將元素分為小於和大於基準點的兩組
+    \item 遞迴地排序兩個子陣列
+\end{itemize}
+
+\vspace{1em}
+\textbf{平均時間複雜度：}$O(n \log n)$\\
+\textbf{最壞時間複雜度：}$O(n^2)$\\
+\textbf{空間複雜度：}$O(\log n)$
+
+\vspace{1em}
+\textbf{待補充：程式碼實作}
+\end{frame}
+
+\begin{frame}{範例三：二分搜尋 (Binary Search)}
+\begin{itemize}
+    \item 在已排序陣列中搜尋特定元素
+    \item 每次比較中間元素，排除一半的搜尋空間
+    \item 遞迴地在剩餘區間中搜尋
+\end{itemize}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(\log n)$\\
+\textbf{空間複雜度：}$O(1)$（迭代版本）或 $O(\log n)$（遞迴版本）
+
+\vspace{1em}
+\textbf{待補充：程式碼實作}
+\end{frame}
+
+\begin{frame}{範例四：最大子陣列問題}
+\begin{itemize}
+    \item 找出陣列中連續子陣列的最大和
+    \item 分解：將陣列分成左、右兩半
+    \item 考慮三種情況：
+    \begin{itemize}
+        \item 最大子陣列完全在左半部
+        \item 最大子陣列完全在右半部
+        \item 最大子陣列跨越中間點
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n \log n)$
+
+\vspace{1em}
+\textbf{待補充：程式碼實作與圖解}
+\end{frame}
+
+\begin{frame}{分而治之的優缺點}
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\raggedright\arraybackslash}m{6.5cm}|}
+\hline
+\textbf{優點} & 
+易於理解和實作 \newline
+能夠有效利用遞迴結構 \newline
+許多問題都有高效的分而治之解法 \newline
+容易平行化 \\
+\hline
+\textbf{缺點} & 
+可能有額外的空間開銷 \newline
+遞迴深度可能很大 \newline
+子問題間可能有重複計算 \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{本章總結}
+\begin{itemize}
+    \item 分而治之是重要的演算法設計技巧
+    \item 核心思想：分解、解決、合併
+    \item Map \& Reduce 是分而治之的函數式表達
+    \item 經典應用：
+    \begin{itemize}
+        \item 排序演算法（合併排序、快速排序）
+        \item 搜尋演算法（二分搜尋）
+        \item 數值計算問題
+    \end{itemize}
+    \item 時間複雜度分析可使用主定理
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+    \textbf{掌握分而治之，解決問題事半功倍！}
+\end{center}
+\end{frame}
+
+\end{document}

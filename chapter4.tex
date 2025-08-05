@@ -1,0 +1,274 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\begin{document}
+
+\title{資料結構與演算法入門：第 4 章}
+\subtitle{貪婪法與動態規劃 (Greedy \& Dynamic Programming)}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\frame{\titlepage}
+
+\begin{frame}{什麼是貪婪法？}
+\begin{itemize}
+    \item 貪婪法（Greedy Algorithm）是一種演算法設計策略
+    \item 在每一步都做出當下看起來最好的選擇
+    \item 不會回頭修改之前的決定
+    \item 希望透過局部最優解得到全域最優解
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{貪婪法的特點}
+\begin{itemize}
+    \item 簡單直觀，容易實作
+    \item 執行效率通常很高
+    \item 不一定能得到最優解
+    \item 需要證明貪婪選擇的正確性
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{什麼是動態規劃？}
+\begin{itemize}
+    \item 動態規劃（Dynamic Programming, DP）用於解決重疊子問題
+    \item 將複雜問題分解成更小的子問題
+    \item 儲存子問題的解，避免重複計算
+    \item 適用於具有最優子結構的問題
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{動態規劃 vs 分而治之}
+\begin{itemize}
+    \item \textbf{分而治之：}子問題獨立，不重疊
+    \item \textbf{動態規劃：}子問題重疊，需要記錄已計算的結果
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Memorized Divide \& Conquer}
+
+\begin{frame}{記憶化的分而治之}
+\begin{itemize}
+    \item 在分而治之基礎上加入記憶化（Memoization）
+    \item 使用快取儲存已經計算過的子問題結果
+    \item 避免重複計算，提升效率
+    \item 是實現動態規劃的一種方法（由上而下）
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{經典例子：費波那契數列}
+\begin{itemize}
+    \item 原始遞迴：$T(n) = T(n-1) + T(n-2)$，時間複雜度 $O(2^n)$
+    \item 加入記憶化：時間複雜度降為 $O(n)$
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：費波那契數列的記憶化實作}
+\end{frame}
+
+\section{經典動態規劃問題}
+
+\begin{frame}{找零錢問題 (Coin Change Problem)}
+\begin{itemize}
+    \item \textbf{問題：}給定不同面額的硬幣和總金額，求最少硬幣數量
+    \item \textbf{狀態定義：}$dp[i]$ 表示金額 $i$ 所需的最少硬幣數量
+    \item \textbf{轉移方程：}$dp[i] = \min(dp[i-coin] + 1)$ 對所有硬幣面額
+    \item \textbf{初始條件：}$dp[0] = 0$
+\end{itemize}
+
+\vspace{1em}
+\textbf{範例：}硬幣面額 [1, 3, 4]，總金額 6\\
+\textbf{解：}6 = 3 + 3，需要 2 枚硬幣
+
+\vspace{1em}
+\textbf{待補充：程式碼實作與步驟圖解}
+\end{frame}
+
+\begin{frame}{最長遞增子序列 (Longest Increasing Subsequence, LIS)}
+\begin{itemize}
+    \item \textbf{問題：}找出陣列中最長的嚴格遞增子序列
+    \item \textbf{狀態定義：}$dp[i]$ 表示以第 $i$ 個元素結尾的最長遞增子序列長度
+    \item \textbf{轉移方程：}$dp[i] = \max(dp[j] + 1)$ 其中 $j < i$ 且 $arr[j] < arr[i]$
+    \item \textbf{時間複雜度：}$O(n^2)$（可優化至 $O(n \log n)$）
+\end{itemize}
+
+\vspace{1em}
+\textbf{範例：}[10, 9, 2, 5, 3, 7, 101, 18]\\
+\textbf{解：}[2, 3, 7, 18] 或 [2, 3, 7, 101]，長度為 4
+
+\vspace{1em}
+\textbf{待補充：程式碼實作與 $O(n \log n)$ 優化}
+\end{frame}
+
+\begin{frame}{最長共同子序列 (Longest Common Subsequence, LCS)}
+\begin{itemize}
+    \item \textbf{問題：}找出兩個序列的最長共同子序列
+    \item \textbf{狀態定義：}$dp[i][j]$ 表示序列1前$i$個字符與序列2前$j$個字符的LCS長度
+    \item \textbf{轉移方程：}
+    \begin{itemize}
+        \item 若 $s1[i-1] = s2[j-1]$：$dp[i][j] = dp[i-1][j-1] + 1$
+        \item 否則：$dp[i][j] = \max(dp[i-1][j], dp[i][j-1])$
+    \end{itemize}
+    \item \textbf{時間複雜度：}$O(mn)$
+\end{itemize}
+
+\vspace{1em}
+\textbf{範例：}"ABCDGH" 和 "AEDFHR"\\
+\textbf{解：}"ADH"，長度為 3
+
+\vspace{1em}
+\textbf{待補充：程式碼實作與表格填充過程}
+\end{frame}
+
+\begin{frame}{背包問題 (Knapsack Problem)}
+\begin{itemize}
+    \item \textbf{0-1背包：}每個物品只能選擇一次
+    \item \textbf{狀態定義：}$dp[i][w]$ 表示前 $i$ 個物品、背包容量 $w$ 的最大價值
+    \item \textbf{轉移方程：}
+    \begin{itemize}
+        \item 不選第 $i$ 個物品：$dp[i-1][w]$
+        \item 選第 $i$ 個物品：$dp[i-1][w-weight[i]] + value[i]$
+        \item $dp[i][w] = \max($兩者$)$
+    \end{itemize}
+    \item \textbf{時間複雜度：}$O(nW)$
+\end{itemize}
+
+\vspace{1em}
+\textbf{完全背包：}每個物品可以選擇多次\\
+\textbf{多重背包：}每個物品有數量限制
+
+\vspace{1em}
+\textbf{待補充：各種背包問題的程式碼實作}
+\end{frame}
+
+\section{動態規劃應用舉例}
+
+\begin{frame}{舉例一：爬樓梯問題}
+\begin{itemize}
+    \item \textbf{問題：}爬 $n$ 階樓梯，每次可爬 1 或 2 階，有幾種方法？
+    \item \textbf{狀態定義：}$dp[i]$ 表示爬到第 $i$ 階的方法數
+    \item \textbf{轉移方程：}$dp[i] = dp[i-1] + dp[i-2]$
+    \item \textbf{初始條件：}$dp[1] = 1$, $dp[2] = 2$
+\end{itemize}
+
+\vspace{1em}
+\textbf{實際上就是費波那契數列！}
+
+\vspace{1em}
+\textbf{待補充：程式碼實作}
+\end{frame}
+
+\begin{frame}{舉例二：最小路徑和}
+\begin{itemize}
+    \item \textbf{問題：}在 $m \times n$ 網格中從左上角到右下角的最小路徑和
+    \item \textbf{限制：}只能向右或向下移動
+    \item \textbf{狀態定義：}$dp[i][j]$ 表示到達位置 $(i,j)$ 的最小路徑和
+    \item \textbf{轉移方程：}$dp[i][j] = grid[i][j] + \min(dp[i-1][j], dp[i][j-1])$
+\end{itemize}
+
+\vspace{1em}
+\textbf{可優化空間複雜度至 $O(n)$}
+
+\vspace{1em}
+\textbf{待補充：程式碼實作與空間優化}
+\end{frame}
+
+\begin{frame}{舉例三：編輯距離 (Edit Distance)}
+\begin{itemize}
+    \item \textbf{問題：}將字串 A 轉換成字串 B 所需的最少操作數
+    \item \textbf{操作：}插入、刪除、替換字符
+    \item \textbf{狀態定義：}$dp[i][j]$ 表示字串 A 前 $i$ 個字符轉換成字串 B 前 $j$ 個字符的最少操作數
+    \item \textbf{轉移方程：}
+    \begin{itemize}
+        \item 字符相同：$dp[i][j] = dp[i-1][j-1]$
+        \item 字符不同：$dp[i][j] = 1 + \min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])$
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：程式碼實作與實際應用}
+\end{frame}
+
+\begin{frame}{貪婪法 vs 動態規劃}
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|>{\centering\arraybackslash}m{2.5cm}|>{\raggedright\arraybackslash}m{4cm}|>{\raggedright\arraybackslash}m{4cm}|}
+\hline
+\textbf{比較項目} & \textbf{貪婪法} & \textbf{動態規劃} \\
+\hline
+決策方式 & 當下最優選擇 & 考慮所有可能的子問題 \\
+\hline
+時間複雜度 & 通常較低 & 可能較高，需要填表 \\
+\hline
+空間複雜度 & 通常 $O(1)$ & 需要額外儲存空間 \\
+\hline
+適用問題 & 具有貪婪選擇性質 & 具有最優子結構和重疊子問題 \\
+\hline
+正確性 & 需要證明 & 通過狀態轉移保證 \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{本章總結}
+\begin{itemize}
+    \item \textbf{貪婪法：}每步做當下最優選擇，簡單高效但不一定最優
+    \item \textbf{動態規劃：}解決重疊子問題，保證找到最優解
+    \item \textbf{記憶化：}將分而治之與動態規劃結合的技巧
+    \item \textbf{經典問題：}
+    \begin{itemize}
+        \item 找零錢問題
+        \item 最長遞增子序列 (LIS)
+        \item 最長共同子序列 (LCS)
+        \item 背包問題
+    \end{itemize}
+    \item 選擇演算法策略需考慮問題特性和效率需求
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+    \textbf{掌握 DP，解決最優化問題的利器！}
+\end{center}
+\end{frame}
+
+\end{document}
