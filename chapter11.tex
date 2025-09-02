@@ -61,59 +61,59 @@
 \begin{itemize}
     \item \textbf{大數運算 (Big Number)：}處理超出基本資料型別範圍的數值
     \item \textbf{雜湊 (Hash)：}快速查找和資料組織的重要技術
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
 \textbf{這些技術在現代程式開發中無處不在！}
-\end{center>
-\end{frame>
+\end{center}
+\end{frame}
 
 \section{大數運算}
 
 \begin{frame}{為什麼需要大數運算？}
-\begin{itemize>
+\begin{itemize}
     \item 標準整數類型有範圍限制
-    \begin{itemize>
+    \begin{itemize}
         \item 32 位元 int：約 $\pm 2 \times 10^9$
         \item 64 位元 long long：約 $\pm 9 \times 10^{18}$
-    \end{itemize>
+    \end{itemize}
     \item 許多實際問題需要更大的數值
     \item 加密演算法、科學計算、競程常遇到
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{大數應用場景}
-\begin{itemize>
+\begin{itemize}
     \item 計算大階乘：$100!$、$1000!$
     \item RSA 加密：處理數百位元的質數
     \item 費波那契數列的大項
     \item 組合數學中的大數計算
     \item 精確的浮點數運算
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{範例：}$100! \approx 9.33 \times 10^{157}$，遠超 64 位元整數範圍
-\end{frame>
+\end{frame}
 
 \begin{frame}{大數的表示方法}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{字串表示：}直觀但運算不便
     \item \textbf{陣列表示：}每個元素存放一位或多位數字
     \item \textbf{向量表示：}動態調整大小，較為常用
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{陣列表示的考量}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{進位制選擇：}十進位 vs 更高進位制
     \item \textbf{位數順序：}低位在前 vs 高位在前
     \item \textbf{符號處理：}正負數的表示方式
     \item \textbf{前導零：}避免不必要的存儲
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{常見表示：}
@@ -121,22 +121,22 @@
     \item 每個陣列元素存放一位十進位數字
     \item 低位存放在陣列前端（便於進位處理）
     \item 使用額外變數記錄符號
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \textbf{待補充：大數表示法的程式碼實作}
-\end{frame>
+\end{frame}
 
 \begin{frame}{大數基本運算：加法}
-\begin{itemize>
+\begin{itemize}
     \item 模擬手工加法的過程
     \item 從低位開始，逐位相加並處理進位
     \item 需要考慮不同長度的數字
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{加法演算法步驟}
-\begin{enumerate>
+\begin{enumerate}
     \item 從最低位開始
     \item 將對應位數字和進位相加
     \item 如果和 ≥ 10，產生新的進位
@@ -144,7 +144,7 @@
     \item 處理下一位，直到所有位數完成
     \item 處理最後的進位
 \end{enumerate}
-\end{block>
+\end{block}
 
 \vspace{1em}
 \textbf{時間複雜度：}$O(\max(m, n))$，$m$、$n$ 為兩數的位數\\
@@ -152,28 +152,28 @@
 
 \vspace{1em}
 \textbf{待補充：大數加法的詳細實作與範例}
-\end{frame>
+\end{frame}
 
 \begin{frame}{大數基本運算：乘法}
-\begin{itemize>
+\begin{itemize}
     \item 最直接的方法是模擬手工乘法
     \item 每位乘以每位，累加到正確位置
     \item 比加法複雜得多
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{簡單乘法演算法}
-\begin{enumerate>
+\begin{enumerate}
     \item 初始化結果為 0
     \item 對於第二個數的每一位 $d_i$：
     \begin{itemize}
         \item 將第一個數乘以 $d_i$
         \item 將結果左移 $i$ 位
         \item 加到總結果中
-    \end{itemize>
+    \end{itemize}
     \item 處理所有進位
 \end{enumerate}
-\end{block>
+\end{block}
 
 \vspace{1em}
 \textbf{時間複雜度：}$O(mn)$（簡單演算法）\\
@@ -181,15 +181,15 @@
 
 \vspace{1em}
 \textbf{待補充：大數乘法實作與 Karatsuba 演算法介紹}
-\end{frame>
+\end{frame}
 
 \begin{frame}{大數的其他運算}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{減法：}類似加法，但需要處理借位
     \item \textbf{除法：}最複雜，通常使用長除法
     \item \textbf{比較：}從高位開始比較
     \item \textbf{次方：}使用快速冪演算法
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{大數除法要點}
@@ -197,8 +197,8 @@
     \item 試商：估算每一位的商
     \item 調整：如果估算過大，需要調整
     \item 效率考量：可能需要二分搜尋優化
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{快速冪：}$a^n$ 可在 $O(\log n)$ 次乘法內完成\\
@@ -206,17 +206,17 @@
 
 \vspace{1em}
 \textbf{待補充：大數其他運算的實作方法}
-\end{frame>
+\end{frame}
 
 \begin{frame}{大數函式庫}
-\begin{itemize>
+\begin{itemize}
     \item 實作大數運算複雜且容易出錯
     \item 建議使用現成的函式庫
     \item 不同語言有不同的選擇
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|>{\centering\arraybackslash}m{2.5cm}|>{\raggedright\arraybackslash}m{6cm}|}
 \hline
@@ -232,49 +232,49 @@ C\# & BigInteger (.NET) \\
 \hline
 JavaScript & BigInt (ES2020) \\
 \hline
-\end{tabular>
-\end{center>
+\end{tabular}
+\end{center}
 
 \vspace{1em}
 \textbf{注意事項：}
-\begin{itemize>
+\begin{itemize}
     \item 效能考量：大數運算比基本類型慢很多
     \item 記憶體使用：大數佔用更多空間
     \item 競程限制：部分競賽不允許使用外部函式庫
-\end{itemize>
-\end{frame>
+\end{itemize}
+\end{frame}
 
 \section{雜湊 (Hash)}
 
 \begin{frame}{什麼是雜湊？}
-\begin{itemize>
+\begin{itemize}
     \item 雜湊（Hash）是將任意大小的資料映射到固定大小的技術
     \item 雜湊函數：$h: U \rightarrow \{0, 1, 2, ..., m-1\}$
     \item 目標：將鍵值均勻分布到雜湊表中
     \item 核心優勢：平均 $O(1)$ 的查找時間
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{雜湊的應用}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{雜湊表：}快速的鍵值查找
     \item \textbf{資料完整性：}檢測資料是否被修改
     \item \textbf{密碼學：}安全雜湊函數
     \item \textbf{去重複：}快速判斷元素是否重複
     \item \textbf{快取：}Web 快取、資料庫快取
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{理想特性：}均勻分布、計算快速、雜湊值固定長度
-\end{frame>
+\end{frame}
 
 \begin{frame}{雜湊函數設計}
-\begin{itemize>
+\begin{itemize}
     \item 好的雜湊函數應該將鍵值均勻分布
     \item 避免過多的碰撞（collision）
     \item 計算效率要高
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{常見雜湊函數}
@@ -283,8 +283,8 @@ JavaScript & BigInt (ES2020) \\
     \item \textbf{乘法雜湊：}$h(k) = \lfloor m \cdot (k \cdot A \bmod 1) \rfloor$
     \item \textbf{字串雜湊：}多項式雜湊
     \item \textbf{通用雜湊：}隨機選擇參數的函數族
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{字串雜湊範例：}
@@ -293,14 +293,14 @@ $$h(s) = \left( \sum_{i=0}^{n-1} s[i] \cdot p^i \right) \bmod m$$
 
 \vspace{1em}
 \textbf{待補充：各種雜湊函數的實作與特性分析}
-\end{frame>
+\end{frame}
 
 \begin{frame}{雜湊碰撞處理}
-\begin{itemize>
+\begin{itemize}
     \item 碰撞：不同的鍵值產生相同的雜湊值
     \item 由鴿籠原理，碰撞不可避免
     \item 需要有效的碰撞處理策略
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{鏈結法（Chaining）}
@@ -308,8 +308,8 @@ $$h(s) = \left( \sum_{i=0}^{n-1} s[i] \cdot p^i \right) \bmod m$$
     \item 每個雜湊位置維護一個連結串列
     \item 碰撞的元素加入同一個串列
     \item 查找時需要遍歷串列
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \begin{block}{開放定址法（Open Addressing）}
@@ -318,22 +318,22 @@ $$h(s) = \left( \sum_{i=0}^{n-1} s[i] \cdot p^i \right) \bmod m$$
     \item \textbf{線性探測：}依序檢查下一個位置
     \item \textbf{二次探測：}以二次函數跳躍
     \item \textbf{雙重雜湊：}使用第二個雜湊函數
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{待補充：碰撞處理方法的圖解與性能比較}
-\end{frame>
+\end{frame}
 
 \begin{frame}{雜湊表性能分析}
-\begin{itemize>
+\begin{itemize}
     \item 負載因子：$\alpha = \frac{n}{m}$（元素數/表格大小）
     \item 性能與負載因子密切相關
     \item 需要動態調整表格大小
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
 \hline
@@ -343,8 +343,8 @@ $$h(s) = \left( \sum_{i=0}^{n-1} s[i] \cdot p^i \right) \bmod m$$
 \hline
 線性探測 & $O\left(\frac{1}{1-\alpha}\right)$ & $O(n)$ \\
 \hline
-\end{tabular>
-\end{center>
+\end{tabular}
+\end{center}
 
 \vspace{1em}
 \begin{block}{表格調整}
@@ -352,83 +352,83 @@ $$h(s) = \left( \sum_{i=0}^{n-1} s[i] \cdot p^i \right) \bmod m$$
     \item 當負載因子過高時，擴大表格
     \item 重新雜湊所有元素（rehashing）
     \item 分攤分析：擴大操作的平均成本仍為 $O(1)$
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{待補充：負載因子對性能的影響與動態調整策略}
-\end{frame>
+\end{frame}
 
 \begin{frame}{雜湊在字串處理中的應用}
-\begin{itemize>
+\begin{itemize}
     \item 字串雜湊是處理字串問題的重要技巧
     \item 可以快速比較字串、尋找模式
     \item Rolling Hash 技術特別有用
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{Rolling Hash}
-\begin{itemize>
+\begin{itemize}
     \item 在滑動視窗中快速更新雜湊值
     \item $O(1)$ 時間計算新的雜湊值
     \item 應用：字串匹配、回文檢測
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{範例：}在文本中尋找模式字串
-\begin{enumerate>
+\begin{enumerate}
     \item 計算模式字串的雜湊值
     \item 滑動視窗遍歷文本，計算每個子字串的雜湊值
     \item 雜湊值相同時，進行實際字串比較
-\end{enumerate>
+\end{enumerate}
 
 \vspace{1em}
 \textbf{時間複雜度：}平均 $O(n + m)$，最壞 $O(nm)$
 
 \vspace{1em}
 \textbf{待補充：Rolling Hash 的數學原理與實作}
-\end{frame>
+\end{frame}
 
 \begin{frame}{密碼學雜湊函數}
-\begin{itemize>
+\begin{itemize}
     \item 與一般雜湊函數有不同的安全性要求
     \item 用於密碼存儲、數位簽章、區塊鏈等
     \item 需要滿足更嚴格的性質
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{安全性要求}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{單向性：}難以從雜湊值推導原始資料
     \item \textbf{抗碰撞性：}難以找到產生相同雜湊值的不同輸入
     \item \textbf{雪崩效應：}輸入的小改變導致雜湊值大幅變化
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \begin{block}{常見密碼學雜湊函數}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{MD5：}已被破解，不建議使用
     \item \textbf{SHA-1：}安全性存疑，逐漸淘汰
     \item \textbf{SHA-256：}目前廣泛使用
     \item \textbf{SHA-3：}最新標準
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{待補充：密碼學雜湊函數的應用實例}
-\end{frame>
+\end{frame}
 
 \begin{frame}{雜湊表的實際應用}
-\begin{itemize>
+\begin{itemize}
     \item 幾乎所有程式語言都內建雜湊表
     \item 是現代程式設計的基礎資料結構
     \item 了解原理有助於最佳化性能
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|>{\centering\arraybackslash}m{2.5cm}|>{\raggedright\arraybackslash}m{6cm}|}
 \hline
@@ -444,49 +444,49 @@ JavaScript & Object, Map, Set \\
 \hline
 C\# & Dictionary, HashSet \\
 \hline
-\end{tabular>
-\end{center>
+\end{tabular}
+\end{center}
 
 \vspace{1em}
 \textbf{使用建議：}
-\begin{itemize>
+\begin{itemize}
     \item 優先使用語言內建的雜湊表
     \item 注意鍵的雜湊函數品質
     \item 考慮負載因子對性能的影響
     \item 在性能關鍵的場景中自定義雜湊函數
-\end{itemize>
-\end{frame>
+\end{itemize}
+\end{frame}
 
 \begin{frame}{本章總結}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{大數運算：}
-    \begin{itemize>
+    \begin{itemize}
         \item 處理超出基本類型範圍的數值計算
         \item 基本運算：加、減、乘、除、比較
         \item 實用建議：使用成熟的函式庫
-    \end{itemize>
+    \end{itemize}
     \item \textbf{雜湊技術：}
-    \begin{itemize>
+    \begin{itemize}
         \item 快速查找的核心技術
         \item 雜湊函數設計與碰撞處理
         \item 廣泛應用：資料結構、字串處理、密碼學
-    \end{itemize>
+    \end{itemize}
     \item 這些技術在實際開發中無處不在
     \item 理解原理有助於寫出更高效的程式
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
     \textbf{掌握這些實用技術，讓程式設計更加得心應手！}
-\end{center>
-\end{frame>
+\end{center}
+\end{frame}
 
 \begin{frame}{課程總結}
-\begin{itemize>
+\begin{itemize}
     \item 我們已經完成了資料結構與演算法的基礎學習
     \item 從複雜度分析到圖論，涵蓋了核心主題
     \item 這些知識是進一步學習的重要基礎
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{學習建議}
@@ -495,14 +495,14 @@ C\# & Dictionary, HashSet \\
     \item \textbf{解決實際問題：}參與競程、開源專案
     \item \textbf{持續學習：}演算法是不斷發展的領域
     \item \textbf{思考應用：}將所學應用到實際專案中
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
     \textbf{恭喜完成課程！}\\
     \textbf{繼續在演算法的世界中探索吧！}
-\end{center>
-\end{frame>
+\end{center}
+\end{frame}
 
 \end{document}

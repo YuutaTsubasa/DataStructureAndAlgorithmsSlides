@@ -66,25 +66,25 @@
     \item \textbf{路徑（Path）：}連接兩頂點的頂點序列
     \item \textbf{環（Cycle）：}起點和終點相同的路徑
     \item \textbf{連通（Connected）：}任意兩頂點間都有路徑
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
 \textbf{待補充：圖的基本概念圖解}
-\end{center>
-\end{frame>
+\end{center}
+\end{frame}
 
 \begin{frame}{圖的分類}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{有向圖 vs 無向圖：}邊是否有方向
     \item \textbf{加權圖 vs 非加權圖：}邊是否有權重
     \item \textbf{簡單圖 vs 多重圖：}是否允許重複邊和自環
     \item \textbf{稠密圖 vs 稀疏圖：}邊數相對於頂點數的多寡
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{3cm}|>{\centering\arraybackslash}m{3cm}|}
 \hline
@@ -94,27 +94,27 @@
 \hline
 稠密圖 & $|E| = O(|V|^2)$ & 鄰接矩陣 \\
 \hline
-\end{tabular>
-\end{center>
+\end{tabular}
+\end{center}
 
 \vspace{1em}
 \textbf{實際例子：}
-\begin{itemize>
+\begin{itemize}
     \item 社交網路（有向、無權重）
     \item 道路網路（無向、有權重）
     \item 網際網路（有向、可能有權重）
-\end{itemize>
-\end{frame>
+\end{itemize}
+\end{frame}
 
 \begin{frame}{圖的表示法}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{鄰接矩陣（Adjacency Matrix）：}二維陣列表示
     \item \textbf{鄰接串列（Adjacency List）：}每個頂點維護相鄰頂點的串列
     \item \textbf{邊串列（Edge List）：}直接儲存所有邊的資訊
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
-\begin{center>
+\begin{center}
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{|>{\centering\arraybackslash}m{2.5cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|}
 \hline
@@ -126,59 +126,59 @@
 \hline
 邊串列 & $O(E)$ & $O(E)$ & $O(E)$ \\
 \hline
-\end{tabular>
-\end{center>
+\end{tabular}
+\end{center}
 
 \vspace{1em}
 \textbf{待補充：三種表示法的圖解與程式碼實作}
-\end{frame>
+\end{frame}
 
 \section{最小生成樹}
 
 \begin{frame}{什麼是最小生成樹？}
-\begin{itemize>
+\begin{itemize}
     \item 最小生成樹（Minimum Spanning Tree, MST）是連通加權無向圖的一個子圖
     \item 包含所有頂點，且邊的權重總和最小
     \item 恰好有 $|V| - 1$ 條邊，形成樹結構
     \item 應用：網路設計、聚類分析
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{MST 的性質}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{切割性質：}對於任意切割，權重最小的跨越邊必在某個 MST 中
     \item \textbf{環路性質：}對於任意環路，權重最大的邊不在任何 MST 中
     \item \textbf{唯一性：}如果所有邊權重都不同，MST 是唯一的
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{經典演算法：}Prim's Algorithm、Kruskal's Algorithm
 
 \vspace{1em}
 \textbf{待補充：MST 概念圖解與性質說明}
-\end{frame>
+\end{frame}
 
 \begin{frame}{Prim's Algorithm}
-\begin{itemize>
+\begin{itemize}
     \item 從任意頂點開始，逐步擴展 MST
     \item 每次加入權重最小的跨越邊
     \item 使用優先佇列選擇最小權重邊
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{演算法步驟}
-\begin{enumerate>
+\begin{enumerate}
     \item 選擇任意起始頂點，加入 MST
     \item 將起始頂點的所有邊加入優先佇列
     \item 重複以下步驟直到包含所有頂點：
-    \begin{itemize>
+    \begin{itemize}
         \item 從優先佇列取出權重最小的邊
         \item 如果該邊連接到新頂點，加入 MST
         \item 將新頂點的所有邊加入優先佇列
-    \end{itemize>
-\end{enumerate>
-\end{block>
+    \end{itemize}
+\end{enumerate}
+\end{block}
 
 \vspace{1em}
 \textbf{時間複雜度：}$O(E \log V)$（使用二元堆積）\\
@@ -186,28 +186,28 @@
 
 \vspace{1em}
 \textbf{待補充：Prim's Algorithm 步驟演示與程式碼}
-\end{frame>
+\end{frame}
 
 \begin{frame}{Kruskal's Algorithm}
-\begin{itemize>
+\begin{itemize}
     \item 按邊的權重排序，逐條考慮是否加入 MST
     \item 使用並查集（Union-Find）檢測環路
     \item 貪婪策略：每次選擇權重最小且不形成環路的邊
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{演算法步驟}
-\begin{enumerate>
+\begin{enumerate}
     \item 將所有邊按權重排序
     \item 初始化並查集，每個頂點為獨立集合
     \item 依序考慮每條邊：
-    \begin{itemize>
+    \begin{itemize}
         \item 如果邊的兩端點不在同一集合，加入 MST
         \item 合併兩端點所在的集合
-    \end{itemize>
+    \end{itemize}
     \item 直到 MST 包含 $|V| - 1$ 條邊
-\end{enumerate>
-\end{block>
+\end{enumerate}
+\end{block}
 
 \vspace{1em}
 \textbf{時間複雜度：}$O(E \log E)$（主要是排序）\\
@@ -215,54 +215,54 @@
 
 \vspace{1em}
 \textbf{待補充：Kruskal's Algorithm 演示與並查集應用}
-\end{frame>
+\end{frame}
 
 \section{最短路徑}
 
 \begin{frame}{最短路徑問題}
-\begin{itemize>
+\begin{itemize}
     \item 在加權圖中尋找兩點間權重和最小的路徑
     \item 根據問題類型分為不同變形：
-    \begin{itemize>
+    \begin{itemize}
         \item 單源最短路徑：從一個頂點到所有其他頂點
         \item 單對最短路徑：兩個特定頂點間
         \item 全對最短路徑：所有頂點對之間
-    \end{itemize>
-\end{itemize>
+    \end{itemize}
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{演算法選擇}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{非負權重：}Dijkstra's Algorithm
     \item \textbf{有負權重：}Bellman-Ford Algorithm
     \item \textbf{全對最短路徑：}Floyd-Warshall Algorithm
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{應用：}導航系統、網路路由、遊戲 AI
-\end{frame>
+\end{frame}
 
 \begin{frame}{Dijkstra's Algorithm}
-\begin{itemize>
+\begin{itemize}
     \item 解決單源最短路徑問題（非負權重）
     \item 貪婪策略：每次選擇距離最小的未訪問頂點
     \item 使用優先佇列提高效率
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{演算法步驟}
-\begin{enumerate>
+\begin{enumerate}
     \item 初始化所有頂點距離為無窮大，起點距離為 0
     \item 將所有頂點加入優先佇列
     \item 重複以下步驟直到佇列為空：
-    \begin{itemize>
+    \begin{itemize}
         \item 取出距離最小的頂點 $u$
         \item 對 $u$ 的每個鄰居 $v$，檢查是否能更新最短距離
         \item 如果 $dist[u] + weight(u,v) < dist[v]$，更新 $dist[v]$
-    \end{itemize>
-\end{enumerate>
-\end{block>
+    \end{itemize}
+\end{enumerate}
+\end{block}
 
 \vspace{1em}
 \textbf{時間複雜度：}$O((V + E) \log V)$（使用二元堆積）\\
@@ -270,27 +270,27 @@
 
 \vspace{1em}
 \textbf{待補充：Dijkstra 演算法詳細演示}
-\end{frame>
+\end{frame}
 
 \begin{frame}{Bellman-Ford Algorithm}
-\begin{itemize>
+\begin{itemize}
     \item 解決單源最短路徑問題（允許負權重邊）
     \item 可以檢測負權重環路
     \item 使用動態規劃的思想
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{演算法步驟}
-\begin{enumerate>
+\begin{enumerate}
     \item 初始化所有頂點距離為無窮大，起點距離為 0
     \item 重複 $|V| - 1$ 次：
-    \begin{itemize>
+    \begin{itemize}
         \item 對每條邊 $(u, v)$ 進行鬆弛操作
         \item 如果 $dist[u] + weight(u,v) < dist[v]$，更新 $dist[v]$
-    \end{itemize>
+    \end{itemize}
     \item 檢查負權重環路：再次檢查所有邊，如果還能更新距離，則有負環路
-\end{enumerate>
-\end{block>
+\end{enumerate}
+\end{block}
 
 \vspace{1em}
 \textbf{時間複雜度：}$O(VE)$\\
@@ -298,73 +298,73 @@
 
 \vspace{1em}
 \textbf{待補充：Bellman-Ford 演算法與負環路檢測}
-\end{frame>
+\end{frame}
 
 \section{網路流}
 
 \begin{frame}{最大流問題 (Maximum Flow)}
-\begin{itemize>
+\begin{itemize}
     \item 在流量網路中尋找從源點到匯點的最大流量
     \item 每條邊有容量限制
     \item 滿足流量守恆：除了源點和匯點，每個頂點的入流等於出流
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{基本概念}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{容量（Capacity）：}邊能承載的最大流量
     \item \textbf{流量（Flow）：}邊上實際的流量
     \item \textbf{殘餘網路（Residual Network）：}剩餘容量形成的網路
     \item \textbf{增廣路徑（Augmenting Path）：}從源點到匯點且有剩餘容量的路徑
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{最大流最小切定理：}最大流值等於最小切的容量
 
 \vspace{1em}
 \textbf{應用：}網路頻寬分配、運輸問題、二分圖匹配
-\end{frame>
+\end{frame}
 
 \begin{frame}{Ford-Fulkerson Algorithm}
-\begin{itemize>
+\begin{itemize}
     \item 最大流問題的經典演算法
     \item 重複尋找增廣路徑，直到沒有增廣路徑為止
     \item 具體實作取決於尋找增廣路徑的方法
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{演算法框架}
-\begin{enumerate>
+\begin{enumerate}
     \item 初始化所有邊的流量為 0
     \item 重複以下步驟直到沒有增廣路徑：
-    \begin{itemize>
+    \begin{itemize}
         \item 在殘餘網路中尋找從源點到匯點的路徑
         \item 沿路徑增加流量（bottleneck capacity）
         \item 更新殘餘網路
-    \end{itemize>
+    \end{itemize}
     \item 返回最大流值
-\end{enumerate>
-\end{block>
+\end{enumerate}
+\end{block}
 
 \vspace{1em}
 \textbf{變形：}
-\begin{itemize>
+\begin{itemize}
     \item Edmonds-Karp：使用 BFS 尋找增廣路徑，$O(VE^2)$
     \item Dinic's Algorithm：使用層次圖，$O(V^2E)$
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \textbf{待補充：Ford-Fulkerson 演算法演示}
-\end{frame>
+\end{frame}
 
 \section{圖的應用舉例}
 
 \begin{frame}{舉例一：社交網路分析}
-\begin{itemize>
+\begin{itemize}
     \item 頂點代表用戶，邊代表朋友關係
     \item 分析社群結構、影響力傳播、推薦系統
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{相關演算法}
@@ -373,55 +373,55 @@
     \item \textbf{社群檢測：}發現緊密連接的群組
     \item \textbf{PageRank：}評估網頁/用戶重要性
     \item \textbf{六度分離：}計算用戶間的距離
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{待補充：社交網路圖範例與分析方法}
-\end{frame>
+\end{frame}
 
 \begin{frame}{舉例二：交通路網規劃}
-\begin{itemize>
+\begin{itemize}
     \item 頂點代表地點，邊代表道路，權重代表距離或時間
     \item 導航系統的核心技術
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{實際考量}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{即時交通：}動態更新邊的權重
     \item \textbf{多重條件：}時間、距離、費用的權衡
     \item \textbf{限制條件：}車輛類型、道路限制
     \item \textbf{效率最佳化：}預處理、分層圖
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{進階演算法：}
-\begin{itemize>
+\begin{itemize}
     \item A* 搜尋（啟發式）
     \item Contraction Hierarchies
     \item Hub Labeling
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \textbf{待補充：導航系統演算法原理}
-\end{frame>
+\end{frame}
 
 \begin{frame}{舉例三：網際網路路由}
-\begin{itemize>
+\begin{itemize}
     \item 路由器作為頂點，連線作為邊
     \item 封包在網路中的路徑選擇
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{block}{路由演算法}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{距離向量：}基於 Bellman-Ford
     \item \textbf{鏈路狀態：}基於 Dijkstra
     \item \textbf{BGP：}邊界閘道協定，處理自治系統間路由
-\end{itemize>
-\end{block>
+\end{itemize}
+\end{block}
 
 \vspace{1em}
 \textbf{挑戰：}
@@ -429,33 +429,33 @@
     \item 網路拓撲動態變化
     \item 大規模網路的可擴展性
     \item 安全性和可靠性
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \textbf{待補充：網際網路路由協定原理}
-\end{frame>
+\end{frame}
 
 \begin{frame}{本章總結}
-\begin{itemize>
+\begin{itemize}
     \item \textbf{圖的基礎：}頂點、邊、表示法（鄰接矩陣、鄰接串列）
     \item \textbf{最小生成樹：}
     \begin{itemize}
         \item Prim's Algorithm：逐步擴展
         \item Kruskal's Algorithm：邊排序 + 並查集
-    \end{itemize>
+    \end{itemize}
     \item \textbf{最短路徑：}
-    \begin{itemize>
+    \begin{itemize}
         \item Dijkstra：非負權重，單源
         \item Bellman-Ford：負權重，負環路檢測
-    \end{itemize>
+    \end{itemize}
     \item \textbf{網路流：}Ford-Fulkerson、最大流最小切
     \item \textbf{應用廣泛：}社交網路、交通、網際網路、生物資訊
-\end{itemize>
+\end{itemize}
 
 \vspace{1em}
 \begin{center}
     \textbf{圖論是解決複雜關係問題的強大工具！}
-\end{center>
-\end{frame>
+\end{center}
+\end{frame}
 
-\end{document>
+\end{document}
