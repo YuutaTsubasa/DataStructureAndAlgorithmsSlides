@@ -1,0 +1,424 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{array}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\begin{document}
+
+\title{資料結構與演算法入門：第 7 章}
+\subtitle{排序與搜尋 (Sort \& Search)}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\frame{\titlepage}
+
+\begin{frame}{為什麼要學習排序和搜尋？}
+\begin{itemize}
+    \item 排序和搜尋是電腦科學的基礎問題
+    \item 幾乎所有應用都會用到
+    \item 展示不同演算法設計技巧
+    \item 效能差異巨大，影響實際應用
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{本章重點}
+\begin{itemize}
+    \item 8 種重要的排序演算法
+    \item 2 種基本搜尋演算法
+    \item 時間複雜度分析
+    \item 穩定性和適用場景
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{簡單排序演算法}
+
+\begin{frame}{氣泡排序 (Bubble Sort)}
+\begin{itemize}
+    \item 重複比較相鄰元素，如果順序錯誤就交換
+    \item 每一輪會將最大值「浮」到最後
+    \item 名稱來源：小元素像氣泡一樣上浮
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法步驟}
+\begin{enumerate}
+    \item 比較相鄰的元素
+    \item 如果第一個比第二個大，就交換它們
+    \item 對每一對相鄰元素做同樣的工作
+    \item 重複以上步驟，直到沒有需要交換的元素
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n^2)$\\
+\textbf{空間複雜度：}$O(1)$\\
+\textbf{穩定性：}穩定
+
+\vspace{1em}
+\textbf{待補充：氣泡排序動畫演示與程式碼}
+\end{frame}
+
+\begin{frame}{插入排序 (Insertion Sort)}
+\begin{itemize}
+    \item 將陣列分為已排序和未排序兩部分
+    \item 每次從未排序部分取一個元素，插入到已排序部分的正確位置
+    \item 就像整理撲克牌的過程
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法特點}
+\begin{itemize}
+    \item 對於小規模資料表現良好
+    \item 對於近乎排序的資料效率很高
+    \item 是自適應演算法（adaptive）
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}最佳 $O(n)$，平均/最壞 $O(n^2)$\\
+\textbf{空間複雜度：}$O(1)$\\
+\textbf{穩定性：}穩定
+
+\vspace{1em}
+\textbf{待補充：插入排序動畫演示與程式碼}
+\end{frame}
+
+\begin{frame}{選擇排序 (Selection Sort)}
+\begin{itemize}
+    \item 每次從未排序部分找出最小值
+    \item 將最小值與未排序部分的第一個元素交換
+    \item 重複此過程直到全部排序完成
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法特點}
+\begin{itemize}
+    \item 交換次數最少（最多 $n-1$ 次）
+    \item 不受資料初始順序影響
+    \item 實作簡單
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n^2)$（所有情況）\\
+\textbf{空間複雜度：}$O(1)$\\
+\textbf{穩定性：}不穩定
+
+\vspace{1em}
+\textbf{待補充：選擇排序動畫演示與程式碼}
+\end{frame}
+
+\section{高效排序演算法}
+
+\begin{frame}{快速排序 (Quick Sort)}
+\begin{itemize}
+    \item 分而治之的經典應用
+    \item 選擇一個基準點（pivot），將陣列分為小於和大於基準的兩部分
+    \item 遞迴地對兩部分進行排序
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{Partition 步驟}
+\begin{enumerate}
+    \item 選擇基準點（通常是最後一個元素）
+    \item 將小於基準的元素移到左邊
+    \item 將大於基準的元素移到右邊
+    \item 將基準點放到正確位置
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}最佳/平均 $O(n \log n)$，最壞 $O(n^2)$\\
+\textbf{空間複雜度：}$O(\log n)$\\
+\textbf{穩定性：}不穩定
+
+\vspace{1em}
+\textbf{待補充：快速排序詳細演示與優化技巧}
+\end{frame}
+
+\begin{frame}{合併排序 (Merge Sort)}
+\begin{itemize}
+    \item 分而治之策略，保證穩定的 $O(n \log n)$ 效能
+    \item 將陣列分為兩半，遞迴排序，然後合併
+    \item 合併步驟是關鍵：將兩個已排序陣列合併成一個
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法優點}
+\begin{itemize}
+    \item 時間複雜度穩定
+    \item 穩定排序
+    \item 適合外部排序（資料量超過記憶體）
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n \log n)$（所有情況）\\
+\textbf{空間複雜度：}$O(n)$\\
+\textbf{穩定性：}穩定
+
+\vspace{1em}
+\textbf{待補充：合併排序演示與合併過程詳解}
+\end{frame}
+
+\section{特殊排序演算法}
+
+\begin{frame}{桶排序 (Bucket Sort)}
+\begin{itemize}
+    \item 將元素分配到有限數量的桶中
+    \item 每個桶內部進行排序
+    \item 按順序串接所有桶的結果
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{適用條件}
+\begin{itemize}
+    \item 資料分布均勻
+    \item 知道資料的範圍
+    \item 可以設計適當的雜湊函數
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}平均 $O(n+k)$，最壞 $O(n^2)$\\
+\textbf{空間複雜度：}$O(n+k)$\\
+\textbf{穩定性：}取決於桶內排序演算法
+
+\vspace{1em}
+\textbf{待補充：桶排序圖解與實作}
+\end{frame}
+
+\begin{frame}{計數排序 (Counting Sort)}
+\begin{itemize}
+    \item 不基於比較的排序演算法
+    \item 統計每個值出現的次數
+    \item 根據計數結果重建排序陣列
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法步驟}
+\begin{enumerate}
+    \item 建立計數陣列，大小為值域範圍
+    \item 統計每個值的出現次數
+    \item 計算累積次數
+    \item 根據累積次數放置元素
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n+k)$，$k$ 為值域範圍\\
+\textbf{空間複雜度：}$O(k)$\\
+\textbf{穩定性：}穩定
+
+\vspace{1em}
+\textbf{待補充：計數排序詳細步驟與程式碼}
+\end{frame}
+
+\begin{frame}{基數排序 (Radix Sort)}
+\begin{itemize}
+    \item 按照數字的位數進行排序
+    \item 從最低位開始，逐位進行穩定排序
+    \item 通常使用計數排序作為子排序演算法
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{LSD vs MSD}
+\begin{itemize}
+    \item \textbf{LSD (Least Significant Digit)：}從個位數開始
+    \item \textbf{MSD (Most Significant Digit)：}從最高位開始
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(d \times (n+k))$，$d$ 為最大位數\\
+\textbf{空間複雜度：}$O(n+k)$\\
+\textbf{穩定性：}穩定
+
+\vspace{1em}
+\textbf{待補充：基數排序演示與不同進制的處理}
+\end{frame}
+
+\section{搜尋演算法}
+
+\begin{frame}{線性搜尋 (Linear Search)}
+\begin{itemize}
+    \item 最簡單的搜尋演算法
+    \item 從頭到尾逐一檢查每個元素
+    \item 適用於未排序的資料
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法特點}
+\begin{itemize}
+    \item 不需要資料預處理
+    \item 適用於任何資料結構
+    \item 實作簡單
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}最佳 $O(1)$，平均/最壞 $O(n)$\\
+\textbf{空間複雜度：}$O(1)$
+
+\vspace{1em}
+\textbf{變形：}
+\begin{itemize}
+    \item Sentinel Search（哨兵搜尋）
+    \item 雙向線性搜尋
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：線性搜尋程式碼與優化}
+\end{frame}
+
+\begin{frame}{二分搜尋 (Binary Search)}
+\begin{itemize}
+    \item 在已排序陣列中搜尋特定元素
+    \item 每次比較中間元素，排除一半搜尋空間
+    \item 分而治之的經典應用
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法步驟}
+\begin{enumerate}
+    \item 比較目標值與中間元素
+    \item 如果相等，找到目標
+    \item 如果目標值較小，搜尋左半部
+    \item 如果目標值較大，搜尋右半部
+    \item 重複直到找到或搜尋空間為空
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(\log n)$\\
+\textbf{空間複雜度：}$O(1)$ 迭代版本，$O(\log n)$ 遞迴版本
+
+\vspace{1em}
+\textbf{前提條件：}資料必須已排序
+\end{frame}
+
+\begin{frame}{Lower Bound 與 Upper Bound}
+\begin{itemize}
+    \item 在有重複元素的已排序陣列中的進階搜尋
+    \item \textbf{Lower Bound：}第一個大於等於目標值的位置
+    \item \textbf{Upper Bound：}第一個大於目標值的位置
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{應用場景}
+\begin{itemize}
+    \item 計算目標值出現次數
+    \item 範圍查詢
+    \item 插入位置確定
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{範例：}陣列 [1, 2, 2, 2, 3, 4]，目標值 2\\
+\textbf{Lower Bound：}index 1\\
+\textbf{Upper Bound：}index 4\\
+\textbf{出現次數：}4 - 1 = 3
+
+\vspace{1em}
+\textbf{待補充：Lower/Upper Bound 實作與應用}
+\end{frame}
+
+\begin{frame}{排序演算法比較}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\scriptsize
+\begin{tabular}{|>{\centering\arraybackslash}m{1.8cm}|>{\centering\arraybackslash}m{1.5cm}|>{\centering\arraybackslash}m{1.5cm}|>{\centering\arraybackslash}m{1.2cm}|>{\centering\arraybackslash}m{1cm}|}
+\hline
+\textbf{演算法} & \textbf{平均時間} & \textbf{最壞時間} & \textbf{空間複雜度} & \textbf{穩定} \\
+\hline
+Bubble Sort & $O(n^2)$ & $O(n^2)$ & $O(1)$ & 是 \\
+\hline
+Insertion Sort & $O(n^2)$ & $O(n^2)$ & $O(1)$ & 是 \\
+\hline
+Selection Sort & $O(n^2)$ & $O(n^2)$ & $O(1)$ & 否 \\
+\hline
+Quick Sort & $O(n \log n)$ & $O(n^2)$ & $O(\log n)$ & 否 \\
+\hline
+Merge Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n)$ & 是 \\
+\hline
+Bucket Sort & $O(n+k)$ & $O(n^2)$ & $O(n+k)$ & 是 \\
+\hline
+Counting Sort & $O(n+k)$ & $O(n+k)$ & $O(k)$ & 是 \\
+\hline
+Radix Sort & $O(d(n+k))$ & $O(d(n+k))$ & $O(n+k)$ & 是 \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{1em}
+\textbf{選擇建議：}
+\begin{itemize}
+    \item 一般用途：Quick Sort 或 Merge Sort
+    \item 需要穩定：Merge Sort
+    \item 整數且範圍小：Counting Sort
+    \item 小規模資料：Insertion Sort
+\end{itemize}
+\end{frame}
+
+\begin{frame}{本章總結}
+\begin{itemize}
+    \item \textbf{排序演算法分類：}
+    \begin{itemize}
+        \item 簡單排序：Bubble、Insertion、Selection
+        \item 高效排序：Quick、Merge
+        \item 特殊排序：Bucket、Counting、Radix
+    \end{itemize}
+    \item \textbf{搜尋演算法：}
+    \begin{itemize}
+        \item Linear Search：適用於未排序資料
+        \item Binary Search：適用於已排序資料
+    \end{itemize}
+    \item \textbf{選擇考量：}時間複雜度、空間複雜度、穩定性、適用場景
+    \item 排序是許多其他演算法的基礎
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+    \textbf{掌握排序搜尋，奠定演算法基礎！}
+\end{center}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,362 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+
+\usepackage{xeCJK}
+\usepackage{fontspec}
+\setmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+\setCJKmainfont[
+  Path = fonts/,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Medium,
+  BoldItalicFont = *-Bold
+]{NotoSansTC}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2
+}
+
+\begin{document}
+
+\title{資料結構與演算法入門：第 6 章}
+\subtitle{堆疊與佇列 (Stack \& Queue)}
+\author{悠太翼 Yuuta Tsubasa}
+\date{\today}
+
+\frame{\titlepage}
+
+\begin{frame}{什麼是堆疊？}
+\begin{itemize}
+    \item 堆疊（Stack）是一種 LIFO（Last In, First Out）資料結構
+    \item 只能在一端進行插入和刪除操作，這一端稱為「頂端」
+    \item 就像疊盤子：最後放上去的盤子最先被拿走
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{基本操作}
+\begin{itemize}
+    \item \textbf{Push：}將元素推入堆疊頂端
+    \item \textbf{Pop：}從堆疊頂端移除元素
+    \item \textbf{Top/Peek：}查看堆疊頂端元素（不移除）
+    \item \textbf{Empty：}檢查堆疊是否為空
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\begin{center}
+\textbf{所有操作的時間複雜度都是 $O(1)$}
+\end{center}
+\end{frame}
+
+\begin{frame}{堆疊的實作方式}
+\begin{itemize}
+    \item \textbf{陣列實作：}
+    \begin{itemize}
+        \item 使用陣列和一個指標記錄頂端位置
+        \item 簡單高效，但大小固定
+    \end{itemize}
+    \item \textbf{連結串列實作：}
+    \begin{itemize}
+        \item 每個節點指向下一個節點
+        \item 動態大小，但需要額外指標空間
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：兩種實作方式的程式碼}
+\end{frame}
+
+\begin{frame}{什麼是佇列？}
+\begin{itemize}
+    \item 佇列（Queue）是一種 FIFO（First In, First Out）資料結構
+    \item 在一端插入（後端），在另一端刪除（前端）
+    \item 就像排隊：先到的人先服務
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{基本操作}
+\begin{itemize}
+    \item \textbf{Enqueue：}將元素加入佇列後端
+    \item \textbf{Dequeue：}從佇列前端移除元素
+    \item \textbf{Front：}查看佇列前端元素（不移除）
+    \item \textbf{Empty：}檢查佇列是否為空
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\begin{center}
+\textbf{所有操作的時間複雜度都是 $O(1)$}
+\end{center}
+\end{frame}
+
+\begin{frame}{佇列的實作方式}
+\begin{itemize}
+    \item \textbf{陣列實作：}
+    \begin{itemize}
+        \item 使用兩個指標記錄前端和後端位置
+        \item 需要處理「假滿」問題 → 環狀陣列
+    \end{itemize}
+    \item \textbf{連結串列實作：}
+    \begin{itemize}
+        \item 維護前端和後端指標
+        \item 動態大小，實作相對簡單
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\textbf{環狀陣列：}當指標到達陣列末端時，回到開頭繼續使用
+
+\vspace{1em}
+\textbf{待補充：環狀陣列圖解與實作程式碼}
+\end{frame}
+
+\section{雙端佇列 (Deque)}
+
+\begin{frame}{雙端佇列 (Double-ended Queue, Deque)}
+\begin{itemize}
+    \item 可以在兩端進行插入和刪除操作的資料結構
+    \item 結合了堆疊和佇列的特性
+    \item 更加靈活的資料結構
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{基本操作}
+\begin{itemize}
+    \item \textbf{Push Front：}在前端插入元素
+    \item \textbf{Push Back：}在後端插入元素
+    \item \textbf{Pop Front：}從前端刪除元素
+    \item \textbf{Pop Back：}從後端刪除元素
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{所有操作的時間複雜度都是 $O(1)$}
+\end{frame}
+
+\begin{frame}{Deque 的實作方式}
+\begin{itemize}
+    \item \textbf{雙向連結串列：}
+    \begin{itemize}
+        \item 維護頭尾指標
+        \item 操作簡單直觀
+    \end{itemize}
+    \item \textbf{環狀陣列：}
+    \begin{itemize}
+        \item 使用動態陣列，支援兩端操作
+        \item 較複雜但記憶體效率更高
+    \end{itemize}
+    \item \textbf{分塊實作：}
+    \begin{itemize}
+        \item 將資料分成多個區塊
+        \item STL deque 的實作方式
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：各種實作方式的詳細說明}
+\end{frame}
+
+\section{堆疊與佇列的應用}
+
+\begin{frame}{堆疊應用一：括號匹配}
+\begin{itemize}
+    \item 檢查括號是否正確配對：()、[]、\{\}
+    \item 演算法：
+    \begin{enumerate}
+        \item 遇到開括號就推入堆疊
+        \item 遇到閉括號就檢查堆疊頂端是否匹配
+        \item 最後堆疊應該為空
+    \end{enumerate}
+\end{itemize}
+
+\vspace{1em}
+\textbf{範例：}
+\begin{itemize}
+    \item "()[]\{\}" → 正確
+    \item "([)]" → 錯誤
+    \item "(((" → 錯誤
+\end{itemize}
+
+\vspace{1em}
+\textbf{待補充：括號匹配程式碼實作}
+\end{frame}
+
+\begin{frame}{堆疊應用二：中綴轉後綴表達式}
+\begin{itemize}
+    \item \textbf{中綴表達式：}$(A + B) \times (C - D)$
+    \item \textbf{後綴表達式：}$A B + C D - \times$
+    \item 使用 Shunting Yard 演算法
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{轉換步驟}
+\begin{enumerate}
+    \item 遇到運算元，直接輸出
+    \item 遇到運算子，考慮優先順序推入堆疊或輸出
+    \item 遇到左括號，推入堆疊
+    \item 遇到右括號，輸出至左括號為止
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：詳細演算法步驟與程式碼}
+\end{frame}
+
+\begin{frame}{堆疊應用三：函數呼叫與遞迴}
+\begin{itemize}
+    \item 程式語言使用堆疊管理函數呼叫
+    \item 每次函數呼叫會推入新的「活化記錄」
+    \item 包含參數、區域變數、返回位址
+    \item 函數結束時彈出堆疊
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{堆疊溢位 (Stack Overflow)}
+\begin{itemize}
+    \item 遞迴深度過大
+    \item 無限遞迴
+    \item 局部變數佔用過多空間
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：函數呼叫堆疊圖解}
+\end{frame}
+
+\begin{frame}{佇列應用一：廣度優先搜尋 (BFS)}
+\begin{itemize}
+    \item BFS 使用佇列來實作
+    \item 確保按照距離遞增的順序訪問節點
+    \item 適用於最短路徑問題
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{BFS 演算法步驟}
+\begin{enumerate}
+    \item 將起始節點加入佇列
+    \item 當佇列不為空時：
+    \begin{itemize}
+        \item 從佇列前端取出節點
+        \item 處理該節點
+        \item 將未訪問的鄰居加入佇列
+    \end{itemize}
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：BFS 程式碼實作與圖解}
+\end{frame}
+
+\begin{frame}{佇列應用二：作業調度}
+\begin{itemize}
+    \item 作業系統的程序調度
+    \item 印表機工作佇列
+    \item 網路封包緩衝
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{Round Robin 調度}
+\begin{itemize}
+    \item 每個程序分配固定時間片
+    \item 時間用完就移到佇列末端
+    \item 確保公平性
+\end{itemize}
+\end{block}
+
+\vspace{1em}
+\textbf{待補充：調度演算法模擬}
+\end{frame}
+
+\begin{frame}{Deque 應用：滑動視窗最值}
+\begin{itemize}
+    \item 問題：給定陣列和視窗大小 $k$，找出每個視窗的最大值
+    \item 使用 deque 維護可能的最大值候選
+    \item 保持 deque 中的元素遞減排序
+\end{itemize}
+
+\vspace{1em}
+\begin{block}{演算法步驟}
+\begin{enumerate}
+    \item 移除超出視窗範圍的元素
+    \item 移除比當前元素小的尾端元素
+    \item 將當前元素加入 deque 尾端
+    \item deque 前端就是視窗最大值
+\end{enumerate}
+\end{block}
+
+\vspace{1em}
+\textbf{時間複雜度：}$O(n)$
+
+\vspace{1em}
+\textbf{待補充：滑動視窗演算法圖解與程式碼}
+\end{frame}
+
+\begin{frame}{Stack vs Queue vs Deque 比較}
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|>{\centering\arraybackslash}m{2.5cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2cm}|>{\centering\arraybackslash}m{2.5cm}|}
+\hline
+\textbf{資料結構} & \textbf{插入/刪除} & \textbf{存取模式} & \textbf{主要應用} \\
+\hline
+Stack & 單端 & LIFO & 函數呼叫、表達式計算 \\
+\hline
+Queue & 雙端 & FIFO & BFS、調度 \\
+\hline
+Deque & 雙端 & 靈活 & 滑動視窗、雙向搜尋 \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{1em}
+\begin{itemize}
+    \item 選擇依據問題的存取模式
+    \item 考慮實作的複雜度和效率
+    \item Stack 最簡單，Deque 最靈活
+\end{itemize}
+\end{frame}
+
+\begin{frame}{本章總結}
+\begin{itemize}
+    \item \textbf{Stack（堆疊）：}LIFO，適合需要回溯的問題
+    \item \textbf{Queue（佇列）：}FIFO，適合按順序處理的問題
+    \item \textbf{Deque（雙端佇列）：}兩端操作，更加靈活
+    \item \textbf{重要應用：}
+    \begin{itemize}
+        \item Stack：括號匹配、表達式轉換、函數呼叫
+        \item Queue：BFS、作業調度
+        \item Deque：滑動視窗問題
+    \end{itemize}
+    \item 實作方式影響效率，需要根據需求選擇
+\end{itemize}
+
+\vspace{1em}
+\begin{center}
+    \textbf{線性資料結構的基石，掌握它們解決更多問題！}
+\end{center}
+\end{frame}
+
+\end{document}
